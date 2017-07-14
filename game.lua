@@ -13,8 +13,8 @@ function gameLoad()
   -- Outros loads
   hudLoad()
   stageLoad()
-  catLoad()
-  enemiesLoad()
+  redFlyLoad()
+  redCatLoad()
 
   -- Termina o Load
   main.state = 'game'
@@ -23,9 +23,26 @@ end -- Fim do Load
 --    Update
 function gameUpdate(dt)
   game.physics.world:update(dt)
-  catUpdate(dt)
-  -- flyUpdate(dt)
-  enemiesUpdate(dt)
+
+  if redCat.state.alive then
+    redCatUpdate(dt)
+    redFlyUpdate(dt , 'player')
+  end
+
+--[[ if yellowCat.state.alive then
+    yellowCatUpdate(dt)
+    yellowFlyUpdate(dt)
+  end
+
+  if greenCat.state.alive then
+    greenCatUpdate(dt)
+    greenFlyUpdate(dt)
+  end
+
+  if blueCat.state.alive then
+    blueCatUpdate(dt)
+    blueFlyUpdate(dt)
+  end--]]
 end -- Fim do Update
 
 --    Draw
@@ -33,7 +50,7 @@ function gameDraw()
   love.graphics.reset()
   -- flyDraw()
   stageDraw()
-  catDraw()
-  enemiesDraw()
+  redFlyDraw()
+  redCatDraw()
   hudDraw()
 end -- Fim do Draw

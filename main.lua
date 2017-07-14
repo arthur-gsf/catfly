@@ -1,9 +1,8 @@
 require 'menu'
 require 'game'
 require 'stage'
-require 'controllers/cat'
-require 'controllers/fly'
-require 'enemies'
+require 'controllers/redCat'
+require 'controllers/redFly'
 require 'colisions'
 require 'hud'
 anim = require 'modules/Anim8'
@@ -35,50 +34,10 @@ function love.update(dt)
       menuBtn(key , scancode , isRepeat)
     end
 
-    if main.state == 'paused' and key == 'escape' then
-      --    Reseta o jogo e vai carregar o menu
-      main.state = 'loading'
-      menuLoad()
-      resetGame()
-      main.state = 'menu'
-    elseif (main.state == 'game' or main.state == 'pause') and key == 'p' then
-      --    Controla o pause e despause
-      if main.state == 'pause' then
-        main.state = 'game'
-      else
-        main.state = 'pause'
-      end
-    end
-
-    if main.state == 'over' then
-      if key == 'm' then
-        -- main.state = 'menu'
-        menuLoad()
-        for k , v in pairs(game.physics.world:getBodyList()) do
-          v:destroy()
-        end
-        enemies = {}
-        game = {}
-        cat= {}
-      elseif key == 'space' and cat.att.level > 1 then
-        main.state = 'game'
-        cat.state.dead = false
-        cat.att.maxLife = cat.att.maxLife - 2
-        cat.att.maxMana = cat.att.maxMana - 2
-        cat.att.level = cat.att.level -1
-        cat.att.life = cat.att.maxLife
-        cat.att.man = cat.att.maxMana
-        cat.att.experience = 0
-        cat.att.maxExperience = cat.att.maxExperience - 2
-        cat.physics.body:setPosition(main.info.screenWidth/2 , main.info.screenHeight/3)
-      end
-    end
-
-
     --    Controle de Botões InGame
     if main.state == 'game' then
-      catBtn(key)
-      -- flyBtn(key)
+      redFlyBtn(key)
+      redCatBtn(key)
     end
 
   end -- Fim da Função

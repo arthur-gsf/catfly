@@ -16,9 +16,8 @@ end
 
 function hudDraw()
   love.graphics.draw(main.hud.portrait, 10, 20)
-  love.graphics.print(cat.att.level , 50 , 70) -- Level do Gato
 
-  for i = 1 , cat.att.maxLife do
+  for i = 1 , redCat.att.maxLife do
     if i ==1 then
       love.graphics.draw(main.hud.emptyBar[1] , 86 + main.hud.emptyBar[1]:getWidth() * i , 26)
     else
@@ -26,7 +25,7 @@ function hudDraw()
     end
   end
 
-  for i = 1 , cat.att.life do
+  for i = 1 , redCat.att.life do
     if i ==1 then
       love.graphics.draw(main.hud.lifeBar[1] , 86 + main.hud.lifeBar[1]:getWidth() * i , 26)
     else
@@ -35,9 +34,9 @@ function hudDraw()
   end
 
 
-  love.graphics.draw(main.hud.lifeBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (cat.att.maxLife + 1) ,22)
+  love.graphics.draw(main.hud.lifeBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (redCat.att.maxLife + 1) ,22)
 
-  for i = 1 , cat.att.maxMana do
+  for i = 1 , redCat.att.maxMana do
     if i ==1 then
       love.graphics.draw(main.hud.emptyBar[1] , 86 + main.hud.emptyBar[1]:getWidth() * i , 46)
     else
@@ -45,7 +44,7 @@ function hudDraw()
     end
   end
 
-  for i = 1 , cat.att.mana do
+  for i = 1 , redCat.att.mana do
     if i ==1 then
       love.graphics.draw(main.hud.manaBar[1] , 86 + main.hud.manaBar[1]:getWidth() * i , 46)
     else
@@ -53,9 +52,9 @@ function hudDraw()
     end
   end
 
-  love.graphics.draw(main.hud.manaBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (cat.att.maxMana + 1) ,42)
+  love.graphics.draw(main.hud.manaBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (redCat.att.maxMana + 1) ,42)
 
-  for i = 1 , cat.att.maxExperience do
+  for i = 1 , redCat.att.maxExperience do
 
     if i ==1 then
       love.graphics.draw(main.hud.emptyBar[1] , 86 + main.hud.emptyBar[1]:getWidth() * i , 66)
@@ -65,7 +64,7 @@ function hudDraw()
 
   end
 
-  for i = 1 , cat.att.experience do
+  for i = 1 , redCat.att.experience do
     if i ==1 then
       love.graphics.draw(main.hud.xpBar[1] , 86 + main.hud.xpBar[1]:getWidth() * i , 66)
     else
@@ -74,5 +73,5 @@ function hudDraw()
   end
 
 
-  love.graphics.draw(main.hud.xpBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (cat.att.maxExperience + 1) ,62)
+  love.graphics.draw(main.hud.xpBarEnd ,86 + main.hud.emptyBar[1]:getWidth() * (redCat.att.maxExperience + 1) ,62)
 end
