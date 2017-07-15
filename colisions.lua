@@ -6,24 +6,26 @@ function beginContact(a , b , coll)
   local x , y = coll:getNormal()
 
   -- Verifica colisões nos gols
-  
-  if usrA == 'redGoal' or usrB == 'redGoal' then
-    redCat.att.life = redCat.att.life - 1
-  elseif usrA == 'yellowGoal' or usrB == 'yellowGoal' then
-    yellowCat.att.life = yellow.att.life - 1
-  elseif usrA == 'blueGoal' or usrB == 'blueGoal' then
-    blueCat.att.life = blueCat.att.life - 1
-  elseif usrA == 'greenGoal' or usrB == 'greenGoal' then
-    greenCat.att.life = greenCat.att.life - 1
+  if string.find(usrA , 'Goal') or string.find(usrB , 'Goal') then
+    local goalBody = (string.find(usrA , 'Goal') and bodyA) or bodyB
+    local otherBody = (bodyB ~= goalBody and bodyB) or bodyA
+    local usr = otherBody:getFixtureList()[1]:getUserData()
+    local goalUsr = (usrA ~= usr and usrA) or usrB
+
+    if hasBall(usr) then
+      setDamage(goalUsr)
+      ball.state.invisible = false
+      game.state = 'transition'
+    end
+
   end
 
   -- Verifica a colisão do hadouken
-
   if usrA == 'fireballHitbox' or usrB == 'fireballHitbox' then
     local fireballBody = (usrA == 'fireballHitbox' and bodyA) or bodyB
     local otherBody    = (bodyB ~= fireballBody and bodyB) or bodyA
     local usr = otherBody:getFixtureList()[1]:getUserData()
-    fireballColisions(fireballBody , otherBody , usr  , x , y)
+    redCatFireballColisions(fireballBody , otherBody , usr  , x , y)
   end
 
   -- Verifica colisões nos gatos
@@ -35,6 +37,13 @@ function beginContact(a , b , coll)
     redCatColisions(catBody , otherBody, usr, x , y)
   end
 
+  if usrA == 'redFly' or usrB == 'redFly' then
+    local flyBody = (usrA == 'redFly' and bodyA) or bodyB
+    local otherBody = (bodyB ~= flyBody and bodyB) or bodyA
+    local usr = otherBody:getFixtureList()[1]:getUserData()
+    redFlyColisions(flyBody , otherBody, usr, x , y)
+  end
+
   if usrA == 'blueCat' or usrB == 'blueCat' then
     local catBody = (usrA == 'blueCat' and bodyA) or bodyB
     local otherBody = (bodyB ~= catBody and bodyB) or bodyA
@@ -42,11 +51,25 @@ function beginContact(a , b , coll)
     blueCatColisions(catBody , otherBody, usr, x , y)
   end
 
-  if usrA == 'yellowcat' or usrB == 'yellowcat' then
-    local catBody = (usrA == 'yellowcat' and bodyA) or bodyB
+  if usrA == 'blueFly' or usrB == 'blueFly' then
+    local flyBody = (usrA == 'blueFly' and bodyA) or bodyB
+    local otherBody = (bodyB ~= flyBody and bodyB) or bodyA
+    local usr = otherBody:getFixtureList()[1]:getUserData()
+    blueFlyColisions(flyBody , otherBody, usr, x , y)
+  end
+
+  if usrA == 'yellowCat' or usrB == 'yellowCat' then
+    local catBody = (usrA == 'yellowCat' and bodyA) or bodyB
     local otherBody = (bodyB ~= catBody and bodyB) or bodyA
     local usr = otherBody:getFixtureList()[1]:getUserData()
-    yellowcatColisions(catBody , otherBody, usr, x , y)
+    yellowCatColisions(catBody , otherBody, usr, x , y)
+  end
+
+  if usrA == 'yellowFly' or usrB == 'yellowFly' then
+    local flyBody = (usrA == 'yellowFly' and bodyA) or bodyB
+    local otherBody = (bodyB ~= flyBody and bodyB) or bodyA
+    local usr = otherBody:getFixtureList()[1]:getUserData()
+    yellowFlyColisions(flyBody , otherBody, usr, x , y)
   end
 
   if usrA == 'greenCat' or usrB == 'greenCat' then
@@ -54,5 +77,12 @@ function beginContact(a , b , coll)
     local otherBody = (bodyB ~= catBody and bodyB) or bodyA
     local usr = otherBody:getFixtureList()[1]:getUserData()
     greenCatColisions(catBody , otherBody, usr, x , y)
+  end
+
+  if usrA == 'greenFly' or usrB == 'greenFly' then
+    local flyBody = (usrA == 'greenFly' and bodyA) or bodyB
+    local otherBody = (bodyB ~= flyBody and bodyB) or bodyA
+    local usr = otherBody:getFixtureList()[1]:getUserData()
+    greenFlyColisions(flyBody , otherBody, usr, x , y)
   end
 end

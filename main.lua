@@ -3,12 +3,18 @@ require 'game'
 require 'stage'
 require 'controllers/redCat'
 require 'controllers/redFly'
+require 'controllers/yellowCat'
+require 'controllers/yellowFly'
+require 'controllers/blueCat'
+require 'controllers/blueFly'
+require 'controllers/greenCat'
+require 'controllers/greenFly'
+require 'controllers/ball'
 require 'colisions'
 require 'hud'
 anim = require 'modules/Anim8'
 --    Load    --
 function love.load()
-  math.randomseed(os.time())
   main = {}
   main.gameOverImg = love.graphics.newImage('img/menu/gameOver.png')
   -- Fonte
@@ -21,9 +27,9 @@ end -- Fim do Load
 
 --    Update    --
 function love.update(dt)
-
+  math.randomseed(os.clock())
   --    Atualiza o game    --
-  if main.state == 'game' or main.state == 'over' then
+  if main.state == 'game' then
     gameUpdate(dt)
   end
 
@@ -33,11 +39,18 @@ function love.update(dt)
     if main.state == 'menu' then
       menuBtn(key , scancode , isRepeat)
     end
-
     --    Controle de Botões InGame
     if main.state == 'game' then
       redFlyBtn(key)
       redCatBtn(key)
+    end
+
+    if main.state == 'over' then
+      for k , v in pairs(game.physics.world:getBodyList()) do
+        v:destroy()
+      end
+      game = {}
+      menuLoad()
     end
 
   end -- Fim da Função
@@ -56,8 +69,7 @@ function love.draw()
     gameDraw()
     -- Desenha a imagem de pause
   elseif main.state == 'over' then
-    gameDraw() -- adicionar o shader
-    love.graphics.draw(main.gameOverImg , main.info.screenWidth/2 , main.info.screenHeight/2 , 0 , 1 , 1, main.gameOverImg:getWidth()/2 , main.gameOverImg:getHeight()/2)
+    love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)
     -- Desenha a imagem de gameOver
   elseif main.state == 'loading' then
     -- Desenha a tela de loading
