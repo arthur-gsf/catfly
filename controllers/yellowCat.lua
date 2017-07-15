@@ -81,6 +81,12 @@ end
 --    Draw
 function yellowCatDraw()
   -- Desenha as animações de cada estado
+  love.graphics.setBlendMode('alpha')
+  if yellowCat.att.ball then
+    love.graphics.draw(particles ,yellowCat.physics.body:getX() , yellowCat.physics.body:getY())
+  end
+  love.graphics.reset()
+
   if yellowCat.state.hadouken    then
     yellowCat.hadoukenAnimation:draw(yellowCat.hadoukenImg,yellowCat.physics.body:getX() , yellowCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
   else

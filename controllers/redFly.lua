@@ -9,7 +9,7 @@ function redFlyLoad()
   redFly.physics.shape = love.physics.newCircleShape(15)
   redFly.physics.fixture = love.physics.newFixture(redFly.physics.body, redFly.physics.shape, 1)
   redFly.physics.body:setLinearDamping(5)
-  redFly.physics.fixture:setRestitution(2)
+  redFly.physics.fixture:setRestitution(1)
   redFly.physics.fixture:setUserData('redFly')
 
   -----   Anim8   ------

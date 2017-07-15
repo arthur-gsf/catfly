@@ -9,7 +9,7 @@ function greenFlyLoad()
   greenFly.physics.shape = love.physics.newCircleShape(15)
   greenFly.physics.fixture = love.physics.newFixture(greenFly.physics.body, greenFly.physics.shape, 1)
   greenFly.physics.body:setLinearDamping(5)
-  greenFly.physics.fixture:setRestitution(2)
+  greenFly.physics.fixture:setRestitution(1)
   greenFly.physics.fixture:setUserData('greenFly')
 
   -----   Anim8   ------

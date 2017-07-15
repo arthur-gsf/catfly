@@ -12,6 +12,7 @@ require 'controllers/greenFly'
 require 'controllers/ball'
 require 'colisions'
 require 'hud'
+require 'particles'
 anim = require 'modules/Anim8'
 --    Load    --
 function love.load()

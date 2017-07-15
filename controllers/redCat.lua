@@ -80,6 +80,11 @@ function redCatBtn(key , scancode , isRepeat)
 end
 --    Draw
 function redCatDraw()
+  love.graphics.setColor(244, 79, 65)
+  if redCat.att.ball then
+    love.graphics.draw(particles ,redCat.physics.body:getX() , redCat.physics.body:getY())
+  end
+  love.graphics.reset()
   -- Desenha as animações de cada estado
   if redCat.state.hadouken    then
     redCat.hadoukenAnimation:draw(redCat.hadoukenImg,redCat.physics.body:getX() , redCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)

@@ -9,7 +9,7 @@ function yellowFlyLoad()
   yellowFly.physics.shape = love.physics.newCircleShape(15)
   yellowFly.physics.fixture = love.physics.newFixture(yellowFly.physics.body, yellowFly.physics.shape, 1)
   yellowFly.physics.body:setLinearDamping(5)
-  yellowFly.physics.fixture:setRestitution(2)
+  yellowFly.physics.fixture:setRestitution(1)
   yellowFly.physics.fixture:setUserData('yellowFly')
 
   -----   Anim8   ------

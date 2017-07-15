@@ -2,9 +2,10 @@ function ballLoad()
   ball = {}
   ball.physics = {}
   ball.physics.body = love.physics.newBody(game.physics.world, main.info.screenWidth/2, main.info.screenHeight/2, 'dynamic')
-  ball.physics.shape = love.physics.newCircleShape(15)
+  ball.physics.shape = love.physics.newCircleShape(10)
   ball.physics.fixture = love.physics.newFixture(ball.physics.body, ball.physics.shape, 1)
   ball.physics.body:setGravityScale(0)
+  ball.physics.fixture:setRestitution(0)
   ball.physics.fixture:setUserData('ball')
 
   ball.state = {}

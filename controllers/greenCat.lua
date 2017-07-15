@@ -80,6 +80,11 @@ function greenCatBtn(key , scancode , isRepeat)
 end
 --    Draw
 function greenCatDraw()
+  love.graphics.setColor(65, 244, 70)
+  if greenCat.att.ball then
+    love.graphics.draw(particles ,greenCat.physics.body:getX() , greenCat.physics.body:getY())
+  end
+  love.graphics.reset()
   -- Desenha as animações de cada estado
   if greenCat.state.hadouken    then
     greenCat.hadoukenAnimation:draw(greenCat.hadoukenImg,greenCat.physics.body:getX() , greenCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)

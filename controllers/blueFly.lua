@@ -9,7 +9,7 @@ function blueFlyLoad()
   blueFly.physics.shape = love.physics.newCircleShape(15)
   blueFly.physics.fixture = love.physics.newFixture(blueFly.physics.body, blueFly.physics.shape, 1)
   blueFly.physics.body:setLinearDamping(5)
-  blueFly.physics.fixture:setRestitution(2)
+  blueFly.physics.fixture:setRestitution(1)
   blueFly.physics.fixture:setUserData('blueFly')
 
   -----   Anim8   ------

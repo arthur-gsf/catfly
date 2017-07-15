@@ -15,6 +15,7 @@ function gameLoad()
   game.sound = {}
 
   -- Outros loads
+  particleLoad()
   hudLoad()
   stageLoad()
   ballLoad()
@@ -33,7 +34,7 @@ end -- Fim do Load
 
 --    Update
 function gameUpdate(dt)
-  print(#game.alive)
+  particles:update(dt)
   if #game.alive == 1 then
     main.state = 'over'
     return
@@ -77,7 +78,9 @@ end -- Fim do Update
 function gameDraw()
   love.graphics.reset()
 
+  stageDraw()
   hudDraw()
+  ballDraw()
   if redCat.state.alive then
     redFlyDraw()
     redCatDraw()
@@ -94,8 +97,6 @@ function gameDraw()
     blueFlyDraw()
     blueCatDraw()
   end
-  stageDraw()
-  ballDraw()
   if game.state == 'transition' then
     love.graphics.print(math.floor(game.count) , main.info.screenWidth/2 , main.info.screenHeight/2)
   end

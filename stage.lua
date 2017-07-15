@@ -5,6 +5,15 @@ function stageLoad()
   stage = {}
   stage.goals = {}
   stage.paredes = {}
+  stage.background = love.graphics.newImage('img/stage/bg.png')
+  stage.cloud = love.graphics.newImage('img/stage/cloud.png')
+  stage.cloudX = 0
+  stage.cloudY = 0
+
+  stage.cloud2 = love.graphics.newImage('img/stage/cloud.png')
+  stage.cloud2X = main.info.screenWidth - stage.cloud2:getWidth()
+  stage.cloud2Y = main.info.screenHeight - stage.cloud2:getHeight()
+
   for i = 1 , 4 do
 
     if i == 1 then
@@ -49,11 +58,52 @@ function stageLoad()
 end -- Fim do Load
 
 function stageDraw()
+  for i = 0 , main.info.screenWidth , stage.background:getWidth() do
+    love.graphics.draw(stage.background , i , 0)
+  end
+
   for k , v in pairs(stage.goals) do
+    if k == 1 then
+      love.graphics.setColor(239, 63, 28)
+    elseif k == 2 then
+      love.graphics.setColor(235, 244, 65)
+    elseif k == 3 then
+      love.graphics.setColor(65, 157, 244)
+    elseif k == 4 then
+      love.graphics.setColor(130, 244, 65)
+    end
     love.graphics.polygon('fill', v['body']:getWorldPoints(v['shape']:getPoints()))
   end
+  love.graphics.reset()
+
   for k , v in pairs(stage.paredes) do
     love.graphics.polygon('fill', v['body']:getWorldPoints(v['shape']:getPoints()))
-    love.graphics.print('O vemelho tem a bola  = '..tostring(redCat.att.ball).. ' O amarelo tem a bola = '..tostring(yellowCat.att.ball) , 500 , 100 )
   end
+
+  stage.cloudX = stage.cloudX + 0.09
+  stage.cloudY = stage.cloudY + 0.09
+
+  if stage.cloudX > main.info.screenWidth then
+    stage.cloudX = - 700
+  end
+
+  if stage.cloudY > main.info.screenHeight then
+    stage.cloudY = -700
+  end
+
+  stage.cloud2X = stage.cloud2X - 0.09
+  stage.cloud2Y = stage.cloud2Y - 0.09
+
+  if stage.cloud2X + stage.cloud2:getWidth() < 0 then
+    stage.cloud2X = main.info.screenWidth - stage.cloud2:getWidth()
+  end
+
+  if stage.cloud2Y + stage.cloud2:getHeight() < 0 then
+    stage.cloud2Y = main.info.screenHeight - stage.cloud2:getHeight()
+  end
+  love.graphics.setBlendMode( 'subtract')
+  love.graphics.setColor(244, 65, 140)
+    love.graphics.draw(stage.cloud , stage.cloudX , stage.cloudY)
+    love.graphics.draw(stage.cloud2 , stage.cloud2X , stage.cloud2Y)
+  love.graphics.reset()
 end

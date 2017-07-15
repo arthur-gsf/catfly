@@ -80,6 +80,11 @@ function blueCatBtn(key , scancode , isRepeat)
 end
 --    Draw
 function blueCatDraw()
+  love.graphics.setColor(65, 175, 244)
+  if blueCat.att.ball then
+    love.graphics.draw(particles ,blueCat.physics.body:getX() , blueCat.physics.body:getY())
+  end
+  love.graphics.reset()
   -- Desenha as animações de cada estado
   if blueCat.state.hadouken    then
     blueCat.hadoukenAnimation:draw(blueCat.hadoukenImg,blueCat.physics.body:getX() , blueCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
@@ -90,13 +95,10 @@ function blueCatDraw()
   -- Desenha o sprite do hadouken
   for k , v in pairs(blueCat.physics.fireball) do
     love.graphics.draw(blueCat.fireballImg[v['direction']], v['body']:getX(), v['body']:getY(), 0, 1 , 1 , blueCat.fireballImg[v['direction']]:getWidth()/2 , blueCat.fireballImg[v['direction']]:getHeight()/2)
-    -- love.graphics.polygon('fill' , v['body']:getWorldPoints(blueCat.physics.fireballShape:getPoints()))
     -- Quando um hadouken passar da tela ele será removido
     if v['body']:getX() < 0 or v['body']:getX() > main.info.screenWidth then
       v['body']:destroy()
       table.remove(blueCat.physics.fireball , 1)
-      print(#blueCat.physics.fireball)
-      print(#game.physics.world:getBodyList())
     end
   end
 end -- Fim do Draw
