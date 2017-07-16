@@ -14,6 +14,7 @@ require 'colisions'
 require 'hud'
 require 'particles'
 anim = require 'modules/Anim8'
+shine = require 'shine'
 --    Load    --
 function love.load()
   main = {}
@@ -24,6 +25,9 @@ function love.load()
   main.info = {}
   main.info.screenWidth , main.info.screenHeight = love.window.getMode()
   menuLoad()
+  local scanlines = shine.scanlines()
+  local filmgrain = shine.filmgrain()
+  hudEffect = scanlines:chain(filmgrain)
 end -- Fim do Load
 
 --    Update    --
@@ -46,7 +50,7 @@ function love.update(dt)
       redCatBtn(key)
     end
 
-    if main.state == 'over' then
+    if main.state == 'over' and k == 'escape' then
       for k , v in pairs(game.physics.world:getBodyList()) do
         v:destroy()
       end
@@ -56,8 +60,7 @@ function love.update(dt)
 
   end -- Fim da Função
 end -- Fim do Update
--- function love.keyreleased(key)
--- end
+
 --    Draw    --
 function love.draw()
 
@@ -71,10 +74,8 @@ function love.draw()
     -- Desenha a imagem de pause
   elseif main.state == 'over' then
     love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)
+    love.graphics.print('Esc para voltar ao menu')
     -- Desenha a imagem de gameOver
-  elseif main.state == 'loading' then
-    -- Desenha a tela de loading
-    love.graphics.draw('img/interface/load.png')
   end
 
 end -- Fim do Draw

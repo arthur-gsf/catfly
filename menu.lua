@@ -1,10 +1,9 @@
 function menuLoad()
   menu = {}
   -- Imagens
-  -- menu.header = love.graphics.newImage('img/menu/header.png')
   -- Som
   menu.beep= love.audio.newSource('sound/menu/beep.wav')
-
+  menu.font = love.graphics.newFont('fonts/fontMenu.ttf', 18)
   -- Ciclo de botões
   menu.focus = 1
   menu.state = 'principal'
@@ -13,12 +12,8 @@ function menuLoad()
 end
 
 function menuDraw()
-
-  --[[ love.graphics.setColor(46, 76, 21)
- love.graphics.draw(menu.header , main.info.screenWidth/2 - menu.header:getWidth()/2 , main.info.screenHeight/2 - menu.header:getHeight()/2) --]]
-
   love.graphics.setBackgroundColor(190, 247, 145)
-  love.graphics.setFont(main.font)
+  love.graphics.setFont(menu.font)
 
   if menu.state == 'principal' then
     -- Alternância de foco nos botões de seleção
@@ -54,12 +49,12 @@ function menuDraw()
   -- Desenha as instruções
   else
     love.graphics.setColor(255,255,255)
-    love.graphics.print('1 Use as setas para controlar o personagem' , 100 , 200)
-    love.graphics.print('2 Use W A S D para controlar o seu parceiro' , 100 , 250)
-    love.graphics.print('3 Para atacar, utilize as teclas C e V' , 100 , 300)
-    love.graphics.print('4 Para soltar ataques especiais pressione a sequencia correta das setas e depois aperte F' , 100 , 350)
-    love.graphics.print('5 Para atacar com o seu parceiro aperte E ' , 100 , 400)
-    love.graphics.print('6 Salve seu irmao ' , 100 , 450)
+    love.graphics.print('1 Use W A S D para controlar o seu personagem' , 100 , 200)
+    love.graphics.print('2 pegue a bola e leve até qualquer gol adversário' , 100 , 250)
+    love.graphics.print('3 Aperte espaço para dar um ataque rápido' , 100 , 300)
+    love.graphics.print('4 batidas muito fortes roubam a bola de você e ela volta ao centro' , 100 , 350)
+    love.graphics.print('6 Aperte f para soltar hadouken (é melhor não tomar um)' , 100 , 400)
+    love.graphics.print('7 Cada gol tomado desconta vida, seja o único a sobrar na arena para vencer !!' , 100 , 450)
   end
 
 end

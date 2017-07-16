@@ -85,6 +85,10 @@ function redCatDraw()
     love.graphics.draw(particles ,redCat.physics.body:getX() , redCat.physics.body:getY())
   end
   love.graphics.reset()
+
+  if not redCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
   -- Desenha as animações de cada estado
   if redCat.state.hadouken    then
     redCat.hadoukenAnimation:draw(redCat.hadoukenImg,redCat.physics.body:getX() , redCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
@@ -95,19 +99,15 @@ function redCatDraw()
   -- Desenha o sprite do hadouken
   for k , v in pairs(redCat.physics.fireball) do
     love.graphics.draw(redCat.fireballImg[v['direction']], v['body']:getX(), v['body']:getY(), 0, 1 , 1 , redCat.fireballImg[v['direction']]:getWidth()/2 , redCat.fireballImg[v['direction']]:getHeight()/2)
-    -- love.graphics.polygon('fill' , v['body']:getWorldPoints(redCat.physics.fireballShape:getPoints()))
     -- Quando um hadouken passar da tela ele será removido
     if v['body']:getX() < 0 or v['body']:getX() > main.info.screenWidth then
       v['body']:destroy()
       table.remove(redCat.physics.fireball , 1)
-      print(#redCat.physics.fireball)
-      print(#game.physics.world:getBodyList())
     end
   end
 end -- Fim do Draw
 
 -- Inverte todas as animações
--- redCat.hadoukenAnimation:flipH()
 
 function redCatEndHadouken()
   redCat.physics.fireball[#redCat.physics.fireball + 1] = {}

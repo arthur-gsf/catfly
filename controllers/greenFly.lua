@@ -9,7 +9,7 @@ function greenFlyLoad()
   greenFly.physics.shape = love.physics.newCircleShape(15)
   greenFly.physics.fixture = love.physics.newFixture(greenFly.physics.body, greenFly.physics.shape, 1)
   greenFly.physics.body:setLinearDamping(5)
-  greenFly.physics.fixture:setRestitution(1)
+  greenFly.physics.fixture:setRestitution(1.5)
   greenFly.physics.fixture:setUserData('greenFly')
 
   -----   Anim8   ------
@@ -57,33 +57,36 @@ function greenFlyUpdate(dt , player)
     elseif ball.state.invisible and not (greenCat.att.ball) then
       local distance = math.sqrt((whoHasBall():getX() - greenFly.physics.body:getX())^2 + (whoHasBall():getY() - greenFly.physics.body:getY())^2)
 
-      if distance < math.random(200,400) and math.floor(greenCat.att.mana)>3  then
+      if distance < math.random(200,400) and math.floor(greenCat.att.mana)>= 3  then
         dash(greenFly.physics.body)
         greenCat.att.mana = greenCat.att.mana - 3
+      elseif distance < math.random(100 , 200) and math.floor(greenCat.att.mana) >= 2 then
+        greenCat.state.hadouken = true
+        greenCat.att.mana = greenCat.att.mana - 2
       end
 
       greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - greenFly.physics.body:getY()))
 
-    elseif ball.state.invisible and greenCat.att.ball then
+    elseif greenCat.att.ball then
       local distance = math.sqrt((greenFly.others.selected:getX() - greenFly.physics.body:getX())^2 + (greenFly.others.selected:getY() - greenFly.physics.body:getY())^2)
 
       greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(greenFly.others.selected:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(greenFly.others.selected:getY() - greenFly.physics.body:getY()))
     end
   elseif player == 'player' then
     if love.keyboard.isDown('a') then
-      greenFly.physics.body:applyForce(-650 , 0)
+      greenFly.physics.body:applyForce(-1050 , 0)
     end
 
     if love.keyboard.isDown('d') then
-      greenFly.physics.body:applyForce(650 , 0)
+      greenFly.physics.body:applyForce(1050 , 0)
     end
 
     if love.keyboard.isDown('w') then
-      greenFly.physics.body:applyForce(0, -600)
+      greenFly.physics.body:applyForce(0, -1000)
     end
 
     if love.keyboard.isDown('s') then
-      greenFly.physics.body:applyForce(0, 600)
+      greenFly.physics.body:applyForce(0, 1000)
     end
   end
 end
@@ -96,7 +99,11 @@ function greenFlyBtn(key)
 end
 
 function greenFlyDraw()
-  love.graphics.setColor(130, 244, 65)
+  if greenCat.state.alive then
+    love.graphics.setColor(130, 244, 65)
+  else
+    love.graphics.setColor(86, 87, 89)
+  end
   greenFly.idleAnimation:draw(greenFly.idleImg , greenFly.physics.body:getX() , greenFly.physics.body:getY() , 0 , 1 , 1 , 40,40)
   love.graphics.reset()
   -- love.graphics.print(greenFly.others.mediumSpeed)

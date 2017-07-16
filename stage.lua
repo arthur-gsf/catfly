@@ -41,6 +41,7 @@ function stageLoad()
       x , y = 20 , main.info.screenHeight - 100
       color = 'green'
     end
+
     stage.goals[i] = {}
     stage.goals[i]['body'] = love.physics.newBody(game.physics.world, x, y, 'static')
     stage.goals[i]['shape'] = love.physics.newRectangleShape(5,100)
@@ -106,4 +107,8 @@ function stageDraw()
     love.graphics.draw(stage.cloud , stage.cloudX , stage.cloudY)
     love.graphics.draw(stage.cloud2 , stage.cloud2X , stage.cloud2Y)
   love.graphics.reset()
+
+  if burstGoal then
+    love.graphics.draw(goalParticles , burstGoal:getX() , burstGoal:getY())
+  end
 end

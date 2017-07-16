@@ -11,7 +11,7 @@ function beginContact(a , b , coll)
     local otherBody = (bodyB ~= goalBody and bodyB) or bodyA
     local usr = otherBody:getFixtureList()[1]:getUserData()
     local goalUsr = (usrA ~= usr and usrA) or usrB
-
+    burstGoal = goalBody
     if hasBall(usr) then
       setDamage(goalUsr)
       ball.state.invisible = false

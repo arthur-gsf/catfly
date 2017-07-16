@@ -9,7 +9,7 @@ function blueFlyLoad()
   blueFly.physics.shape = love.physics.newCircleShape(15)
   blueFly.physics.fixture = love.physics.newFixture(blueFly.physics.body, blueFly.physics.shape, 1)
   blueFly.physics.body:setLinearDamping(5)
-  blueFly.physics.fixture:setRestitution(1)
+  blueFly.physics.fixture:setRestitution(1.5)
   blueFly.physics.fixture:setUserData('blueFly')
 
   -----   Anim8   ------
@@ -57,33 +57,36 @@ function blueFlyUpdate(dt , player)
     elseif ball.state.invisible and not (blueCat.att.ball) then
       local distance = math.sqrt((whoHasBall():getX() - blueFly.physics.body:getX())^2 + (whoHasBall():getY() - blueFly.physics.body:getY())^2)
 
-      if distance < math.random(200,400) and math.floor(blueCat.att.mana)>3  then
+      if distance < math.random(200,400) and math.floor(blueCat.att.mana)>=3  then
         dash(blueFly.physics.body)
         blueCat.att.mana = blueCat.att.mana - 3
+      elseif distance < math.random(100 , 200) and math.floor(blueCat.att.mana)>=2 then
+        blueCat.state.hadouken = true
+        blueCat.att.mana = blueCat.att.mana - 2
       end
 
       blueFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - blueFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - blueFly.physics.body:getY()))
 
-    elseif ball.state.invisible and blueCat.att.ball then
+    elseif blueCat.att.ball then
       local distance = math.sqrt((blueFly.others.selected:getX() - blueFly.physics.body:getX())^2 + (blueFly.others.selected:getY() - blueFly.physics.body:getY())^2)
 
       blueFly.physics.body:applyForce(math.random(700,1700)*1/distance*(blueFly.others.selected:getX() - blueFly.physics.body:getX()) , math.random(700,1700)*1/distance*(blueFly.others.selected:getY() - blueFly.physics.body:getY()))
     end
   elseif player == 'player' then
     if love.keyboard.isDown('a') then
-      blueFly.physics.body:applyForce(-650 , 0)
+      blueFly.physics.body:applyForce(-1050 , 0)
     end
 
     if love.keyboard.isDown('d') then
-      blueFly.physics.body:applyForce(650 , 0)
+      blueFly.physics.body:applyForce(1050 , 0)
     end
 
     if love.keyboard.isDown('w') then
-      blueFly.physics.body:applyForce(0, -600)
+      blueFly.physics.body:applyForce(0, -1000)
     end
 
     if love.keyboard.isDown('s') then
-      blueFly.physics.body:applyForce(0, 600)
+      blueFly.physics.body:applyForce(0, 1000)
     end
   end
 end
@@ -96,7 +99,11 @@ function blueFlyBtn(key)
 end
 
 function blueFlyDraw()
-  love.graphics.setColor(65, 157, 244)
+  if blueCat.state.alive then
+    love.graphics.setColor(65, 157, 244)
+  else
+    love.graphics.setColor(86, 87, 89)
+  end
   blueFly.idleAnimation:draw(blueFly.idleImg , blueFly.physics.body:getX() , blueFly.physics.body:getY() , 0 , 1 , 1 , 40,40)
   love.graphics.reset()
   -- love.graphics.print(blueFly.others.mediumSpeed)

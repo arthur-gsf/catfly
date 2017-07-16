@@ -80,11 +80,15 @@ function blueCatBtn(key , scancode , isRepeat)
 end
 --    Draw
 function blueCatDraw()
+
   love.graphics.setColor(65, 175, 244)
   if blueCat.att.ball then
     love.graphics.draw(particles ,blueCat.physics.body:getX() , blueCat.physics.body:getY())
   end
   love.graphics.reset()
+  if not blueCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
   -- Desenha as animações de cada estado
   if blueCat.state.hadouken    then
     blueCat.hadoukenAnimation:draw(blueCat.hadoukenImg,blueCat.physics.body:getX() , blueCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
@@ -143,16 +147,19 @@ function blueCatColisions(blueCatBody , otherBody , usr , x , y)
 end
 
 function blueCatFireballColisions(fireballBody, otherBody , usr , x ,y)
-  if not string.find(usr , 'blue') and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    -- Aplica o impulso
-    otherBody:applyLinearImpulse(700*-x , 700*-y)
-
-    -- Destroi a bola de fogo
+  if not (usr == 'blueCat' or usr == 'blueFly') then
     for k , v in pairs(blueCat.physics.fireball) do
       if v['body'] == fireballBody then
         v['body']:destroy()
         table.remove(blueCat.physics.fireball, k)
       end
+    end
+    if (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
+      -- Aplica o impulso
+      otherBody:applyLinearImpulse(2000*-x , 2000*-y)
+    end
+    if hasBall(usr) then
+      stealBall(usr)
     end
   end
 end

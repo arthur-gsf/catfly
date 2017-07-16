@@ -85,6 +85,10 @@ function greenCatDraw()
     love.graphics.draw(particles ,greenCat.physics.body:getX() , greenCat.physics.body:getY())
   end
   love.graphics.reset()
+
+  if not greenCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
   -- Desenha as animações de cada estado
   if greenCat.state.hadouken    then
     greenCat.hadoukenAnimation:draw(greenCat.hadoukenImg,greenCat.physics.body:getX() , greenCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
@@ -146,16 +150,19 @@ function greenCatColisions(greenCatBody , otherBody , usr , x , y)
 end
 
 function greenCatFireballColisions(fireballBody, otherBody , usr , x ,y)
-  if not string.find(usr , 'green') and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    -- Aplica o impulso
-    otherBody:applyLinearImpulse(700*-x , 700*-y)
-
-    -- Destroi a bola de fogo
+  if not (usr == 'greenCat' or usr == 'greenFly') then
     for k , v in pairs(greenCat.physics.fireball) do
       if v['body'] == fireballBody then
         v['body']:destroy()
         table.remove(greenCat.physics.fireball, k)
       end
+    end
+    if (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
+      -- Aplica o impulso
+      otherBody:applyLinearImpulse(2000*-x , 2000*-y)
+    end
+    if hasBall(usr) then
+      stealBall(usr)
     end
   end
 end

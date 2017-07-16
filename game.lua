@@ -1,7 +1,7 @@
 --    Load
 function gameLoad()
   game = {}
-
+  game.font = love.graphics.newFont('fonts/font.ttf', 32)
   -- Estados do jogo
   game.state = {}
   game.state = 'transition'
@@ -34,11 +34,14 @@ end -- Fim do Load
 
 --    Update
 function gameUpdate(dt)
+
   particles:update(dt)
+  goalParticles:update(dt)
   if #game.alive == 1 then
     main.state = 'over'
     return
   end
+
   if game.state == 'round' then
     game.physics.world:update(dt)
   elseif game.state == 'transition' then
@@ -47,7 +50,6 @@ function gameUpdate(dt)
       game.state = 'round'
       game.count = 3
     else
-      -- return
     end
     game.physics.world:update(dt/100)
   end
@@ -55,7 +57,7 @@ function gameUpdate(dt)
   ballUpdate(dt)
   if redCat.state.alive then
     redCatUpdate(dt)
-    redFlyUpdate(dt , 'bot')
+    redFlyUpdate(dt , 'player')
   end
 
   if yellowCat.state.alive then
@@ -79,26 +81,53 @@ function gameDraw()
   love.graphics.reset()
 
   stageDraw()
-  hudDraw()
   ballDraw()
+
+  hudEffect:draw(function ()
+    hudDraw()
+  end)
+
   if redCat.state.alive then
-    redFlyDraw()
     redCatDraw()
+    redFlyDraw()
+  else
+    hudEffect:draw(function ()
+      redCatDraw()
+      redFlyDraw()
+    end)
   end
+
   if yellowCat.state.alive then
     yellowCatDraw()
     yellowFlyDraw()
+  else
+    hudEffect:draw(function ()
+      yellowCatDraw()
+      yellowFlyDraw()
+    end)
   end
+
   if greenCat.state.alive then
-    greenFlyDraw()
     greenCatDraw()
+    greenFlyDraw()
+  else
+    hudEffect:draw(function ()
+      greenCatDraw()
+      greenFlyDraw()
+    end)
   end
   if blueCat.state.alive then
-    blueFlyDraw()
     blueCatDraw()
+    blueFlyDraw()
+  else
+    hudEffect:draw(function ()
+      blueCatDraw()
+      blueFlyDraw()
+    end)
   end
   if game.state == 'transition' then
-    love.graphics.print(math.floor(game.count) , main.info.screenWidth/2 , main.info.screenHeight/2)
+    love.graphics.setFont(game.font)
+    love.graphics.print(math.floor(game.count) , main.info.screenWidth/2 - 50 , main.info.screenHeight/2 - 50)
   end
 end -- Fim do Draw
 
@@ -149,6 +178,8 @@ function stealBall(usr)
 end
 
 function setDamage(usr)
+  goalParticles:emit(20)
+
   if string.find(usr , 'red') then
     redCat.att.life = redCat.att.life  - 1
   elseif string.find(usr , 'yellow') then
@@ -191,7 +222,6 @@ function setDamage(usr)
   blueCat.att.ball = false
   greenCat.att.ball = false
   yellowCat.att.ball = false
-  print('aplicou')
 end
 
 function setRandom(usr)

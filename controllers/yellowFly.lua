@@ -9,7 +9,7 @@ function yellowFlyLoad()
   yellowFly.physics.shape = love.physics.newCircleShape(15)
   yellowFly.physics.fixture = love.physics.newFixture(yellowFly.physics.body, yellowFly.physics.shape, 1)
   yellowFly.physics.body:setLinearDamping(5)
-  yellowFly.physics.fixture:setRestitution(1)
+  yellowFly.physics.fixture:setRestitution(1.5)
   yellowFly.physics.fixture:setUserData('yellowFly')
 
   -----   Anim8   ------
@@ -60,30 +60,33 @@ function yellowFlyUpdate(dt , player)
       if distance < math.random(200,400) and math.floor(yellowCat.att.mana)>3  then
         dash(yellowFly.physics.body)
         yellowCat.att.mana = yellowCat.att.mana - 3
+      elseif distance < math.random(100 , 200) and math.floor(yellowCat.att.mana)>= 2 then
+        yellowCat.state.hadouken = true
+        yellowCat.att.mana = yellowCat.att.mana - 2
       end
 
       yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - yellowFly.physics.body:getY()))
 
-    elseif ball.state.invisible and yellowCat.att.ball then
+    elseif yellowCat.att.ball then
       local distance = math.sqrt((yellowFly.others.selected:getX() - yellowFly.physics.body:getX())^2 + (yellowFly.others.selected:getY() - yellowFly.physics.body:getY())^2)
 
       yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(yellowFly.others.selected:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(yellowFly.others.selected:getY() - yellowFly.physics.body:getY()))
     end
   elseif player == 'player' then
     if love.keyboard.isDown('a') then
-      yellowFly.physics.body:applyForce(-650 , 0)
+      yellowFly.physics.body:applyForce(-1050 , 0)
     end
 
     if love.keyboard.isDown('d') then
-      yellowFly.physics.body:applyForce(650 , 0)
+      yellowFly.physics.body:applyForce(1050 , 0)
     end
 
     if love.keyboard.isDown('w') then
-      yellowFly.physics.body:applyForce(0, -600)
+      yellowFly.physics.body:applyForce(0, -1000)
     end
 
     if love.keyboard.isDown('s') then
-      yellowFly.physics.body:applyForce(0, 600)
+      yellowFly.physics.body:applyForce(0, 1000)
     end
   end
 end
@@ -96,7 +99,11 @@ function yellowFlyBtn(key)
 end
 
 function yellowFlyDraw()
-  love.graphics.setColor(235, 244, 65)
+  if yellowCat.state.alive then
+    love.graphics.setColor(235, 244, 65)
+  else
+    love.graphics.setColor(86, 87, 89)
+  end
   yellowFly.idleAnimation:draw(yellowFly.idleImg , yellowFly.physics.body:getX() , yellowFly.physics.body:getY() , 0 , 1 , 1 , 40,40)
   love.graphics.reset()
   -- love.graphics.print(yellowFly.others.mediumSpeed)

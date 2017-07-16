@@ -1,6 +1,9 @@
 function hudLoad()
   main.hud = {}
-  main.hud.portrait = love.graphics.newImage('img/hud/portrait.png')
+  main.hud.redPortrait = love.graphics.newImage('img/hud/redPortrait.png')
+  main.hud.yellowPortrait = love.graphics.newImage('img/hud/yellowPortrait.png')
+  main.hud.bluePortrait = love.graphics.newImage('img/hud/bluePortrait.png')
+  main.hud.greenPortrait = love.graphics.newImage('img/hud/greenPortrait.png')
 
   main.hud.emptyBar = {love.graphics.newImage('img/hud/emptyBarF.png') , love.graphics.newImage('img/hud/emptyBarL.png')}
 
@@ -15,7 +18,12 @@ function hudLoad()
 end
 
 function hudDraw()
-  love.graphics.draw(main.hud.portrait, 100, 70)
+
+  if not redCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
+  -- redCat
+  love.graphics.draw(main.hud.redPortrait, 100, 70)
 
   for i = 1 , redCat.att.maxLife do
     if i ==1 then
@@ -71,66 +79,196 @@ function hudDraw()
   end
 
   love.graphics.draw(main.hud.xpBarEnd ,172 + main.hud.emptyBar[1]:getWidth() * (redCat.att.maxExperience + 1) ,112)
-
+  love.graphics.setColor(255, 255, 255, 255)
 
   -- yellowCat
-  love.graphics.draw(main.hud.portrait, main.info.screenWidth - 400, 70)
+  if not yellowCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
+
+  love.graphics.draw(main.hud.yellowPortrait, main.info.screenWidth - 400, 70)
 
   for i = 1 , yellowCat.att.maxLife do
     if i ==1 then
-      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 76)
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 76)
     else
-      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 76)
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 76)
     end
   end
 
   for i = 1 , yellowCat.att.life do
     if i ==1 then
-      love.graphics.draw(main.hud.lifeBar[1] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , 76)
+      love.graphics.draw(main.hud.lifeBar[1] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , 76)
     else
-      love.graphics.draw(main.hud.lifeBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , 76)
+      love.graphics.draw(main.hud.lifeBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , 76)
     end
   end
 
 
-  love.graphics.draw(main.hud.lifeBarEnd ,(main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxLife + 1) ,72)
+  love.graphics.draw(main.hud.lifeBarEnd ,(main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxLife + 1) ,72)
 
   for i = 1 , yellowCat.att.maxMana do
     if i ==1 then
-      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 96)
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 96)
     else
-      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 96)
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 96)
     end
   end
 
   for i = 1 , yellowCat.att.mana do
     if i ==1 then
-      love.graphics.draw(main.hud.manaBar[1] ,(main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.manaBar[1]:getWidth() * i , 96)
+      love.graphics.draw(main.hud.manaBar[1] ,(main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.manaBar[1]:getWidth() * i , 96)
     else
-      love.graphics.draw(main.hud.manaBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth())+ main.hud.manaBar[1]:getWidth() * i , 96)
+      love.graphics.draw(main.hud.manaBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth())+ main.hud.manaBar[1]:getWidth() * i , 96)
     end
   end
 
-  love.graphics.draw(main.hud.manaBarEnd ,(main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxMana + 1) ,92)
+  love.graphics.draw(main.hud.manaBarEnd ,(main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxMana + 1) ,92)
 
   for i = 1 , yellowCat.att.maxExperience do
 
     if i ==1 then
-      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 116)
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 116)
     else
-      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 116)
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , 116)
     end
 
   end
 
   for i = 1 , yellowCat.att.experience do
     if i ==1 then
-      love.graphics.draw(main.hud.xpBar[1] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , 116)
+      love.graphics.draw(main.hud.xpBar[1] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , 116)
     else
-      love.graphics.draw(main.hud.xpBar[2] , (main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , 116)
+      love.graphics.draw(main.hud.xpBar[2] , (main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , 116)
     end
   end
 
-  love.graphics.draw(main.hud.xpBarEnd ,(main.info.screenWidth - 408 + main.hud.portrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxExperience + 1) ,112)
+  love.graphics.draw(main.hud.xpBarEnd ,(main.info.screenWidth - 408 + main.hud.yellowPortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (yellowCat.att.maxExperience + 1) ,112)
+  love.graphics.setColor(255, 255, 255, 255)
 
+  -- blueCat
+  if not blueCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
+  love.graphics.draw(main.hud.bluePortrait, main.info.screenWidth - 400, main.info.screenHeight - 160)
+
+  for i = 1 , blueCat.att.maxLife do
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    end
+  end
+
+  for i = 1 , blueCat.att.life do
+    if i ==1 then
+      love.graphics.draw(main.hud.lifeBar[1] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    else
+      love.graphics.draw(main.hud.lifeBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.lifeBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    end
+  end
+
+
+  love.graphics.draw(main.hud.lifeBarEnd ,(main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (blueCat.att.maxLife + 1) ,main.info.screenHeight - 158)
+
+  for i = 1 , blueCat.att.maxMana do
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    end
+  end
+
+  for i = 1 , blueCat.att.mana do
+    if i ==1 then
+      love.graphics.draw(main.hud.manaBar[1] ,(main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.manaBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    else
+      love.graphics.draw(main.hud.manaBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth())+ main.hud.manaBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    end
+  end
+
+  love.graphics.draw(main.hud.manaBarEnd ,(main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (blueCat.att.maxMana + 1) ,main.info.screenHeight - 138)
+
+  for i = 1 , blueCat.att.maxExperience do
+
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    end
+
+  end
+
+  for i = 1 , blueCat.att.experience do
+    if i ==1 then
+      love.graphics.draw(main.hud.xpBar[1] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    else
+      love.graphics.draw(main.hud.xpBar[2] , (main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.xpBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    end
+  end
+
+  love.graphics.draw(main.hud.xpBarEnd ,(main.info.screenWidth - 408 + main.hud.bluePortrait:getWidth()) + main.hud.emptyBar[1]:getWidth() * (blueCat.att.maxExperience + 1) ,main.info.screenHeight - 118)
+  love.graphics.setColor(255, 255, 255, 255)
+
+  -- greenCat
+  if not  greenCat.state.alive then
+    love.graphics.setColor(86, 87, 89)
+  end
+  love.graphics.draw(main.hud.greenPortrait, 100, main.info.screenHeight - 160)
+
+  for i = 1 , greenCat.att.maxLife do
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    end
+  end
+
+  for i = 1 , greenCat.att.life do
+    if i ==1 then
+      love.graphics.draw(main.hud.lifeBar[1] , 176 + main.hud.lifeBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    else
+      love.graphics.draw(main.hud.lifeBar[2] , 176 + main.hud.lifeBar[1]:getWidth() * i , main.info.screenHeight - 155)
+    end
+  end
+
+
+  love.graphics.draw(main.hud.lifeBarEnd ,176 + main.hud.emptyBar[1]:getWidth() * (greenCat.att.maxLife + 1) ,main.info.screenHeight - 158)
+
+  for i = 1 , greenCat.att.maxMana do
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    end
+  end
+
+  for i = 1 , greenCat.att.mana do
+    if i ==1 then
+      love.graphics.draw(main.hud.manaBar[1] , 176 + main.hud.manaBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    else
+      love.graphics.draw(main.hud.manaBar[2] , 176 + main.hud.manaBar[1]:getWidth() * i , main.info.screenHeight - 135)
+    end
+  end
+
+  love.graphics.draw(main.hud.manaBarEnd ,176 + main.hud.emptyBar[1]:getWidth() * (greenCat.att.maxMana + 1) ,main.info.screenHeight - 138)
+
+  for i = 1 , greenCat.att.maxExperience do
+    if i ==1 then
+      love.graphics.draw(main.hud.emptyBar[1] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    else
+      love.graphics.draw(main.hud.emptyBar[2] , 176 + main.hud.emptyBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    end
+  end
+
+  for i = 1 , greenCat.att.experience do
+    if i ==1 then
+      love.graphics.draw(main.hud.xpBar[1] , 176 + main.hud.xpBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    else
+      love.graphics.draw(main.hud.xpBar[2] , 176 + main.hud.xpBar[1]:getWidth() * i , main.info.screenHeight - 115)
+    end
+  end
+
+  love.graphics.draw(main.hud.xpBarEnd ,172 + main.hud.emptyBar[1]:getWidth() * (greenCat.att.maxExperience + 1) ,main.info.screenHeight - 118)
+  love.graphics.setColor(255, 255, 255, 255)
 end
