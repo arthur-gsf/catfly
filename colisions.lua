@@ -21,11 +21,20 @@ function beginContact(a , b , coll)
   end
 
   -- Verifica a colisão do hadouken
-  if usrA == 'fireballHitbox' or usrB == 'fireballHitbox' then
-    local fireballBody = (usrA == 'fireballHitbox' and bodyA) or bodyB
+  if string.find(usrA , 'Fireball') or string.find(usrB, 'Fireball') then
+    local fireballBody = (string.find(usrA , 'Fireball') and bodyA) or bodyB
+    local fireballUsr = fireballBody:getFixtureList()[1]:getUserData()
     local otherBody    = (bodyB ~= fireballBody and bodyB) or bodyA
     local usr = otherBody:getFixtureList()[1]:getUserData()
-    redCatFireballColisions(fireballBody , otherBody , usr  , x , y)
+    if string.find(fireballUsr , 'Red') then
+      redCatFireballColisions(fireballBody , otherBody , usr  , x , y)
+    elseif string.find(fireballUsr , 'Yellow') then
+      yellowCatFireballColisions(fireballBody , otherBody , usr  , x , y)
+    elseif string.find(fireballUsr , 'Blue') then
+      blueCatFireballColisions(fireballBody , otherBody , usr  , x , y)
+    elseif string.find(fireballUsr , 'Green') then
+      greenCatFireballColisions(fireballBody , otherBody , usr  , x , y)
+    end
   end
 
   -- Verifica colisões nos gatos

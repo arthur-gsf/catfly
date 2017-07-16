@@ -7,7 +7,6 @@ function menuLoad()
   -- Ciclo de botões
   menu.focus = 1
   menu.state = 'principal'
-
   main.state = 'menu' -- Muda o estado para menu e termina o load
 end
 

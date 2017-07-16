@@ -55,7 +55,7 @@ end -- Fim do Load
 
 --    Update
 function redCatUpdate(dt)
-  redCat.att.mana = (redCat.att.mana<redCat.att.maxMana and redCat.att.mana + dt/3) or redCat.att.maxMana
+  redCat.att.mana = (redCat.att.mana<redCat.att.maxMana and redCat.att.mana + dt/2) or redCat.att.maxMana
   redCat.others.orientationIndex = (redCat.others.direction == 'right' and 1) or -1
   if redCat.att.life <= 0 then
     redCat.state.alive = false
@@ -76,6 +76,7 @@ function redCatBtn(key , scancode , isRepeat)
   if key == 'f' and math.floor(redCat.att.mana) >= 2 then
     redCat.state.hadouken = true
     redCat.att.mana = redCat.att.mana - 2
+    love.audio.play(game.sound.hadouken)
   end
 end
 --    Draw
@@ -84,11 +85,12 @@ function redCatDraw()
   if redCat.att.ball then
     love.graphics.draw(particles ,redCat.physics.body:getX() , redCat.physics.body:getY())
   end
-  love.graphics.reset()
+  love.graphics.setColor(255,255, 255 , 255)
 
   if not redCat.state.alive then
     love.graphics.setColor(86, 87, 89)
   end
+
   -- Desenha as animações de cada estado
   if redCat.state.hadouken    then
     redCat.hadoukenAnimation:draw(redCat.hadoukenImg,redCat.physics.body:getX() , redCat.physics.body:getY() ,0 , 1 , 1 ,40 , 40)
@@ -105,6 +107,7 @@ function redCatDraw()
       table.remove(redCat.physics.fireball , 1)
     end
   end
+  love.graphics.setColor(255,255, 255 , 255)
 end -- Fim do Draw
 
 -- Inverte todas as animações
@@ -124,7 +127,7 @@ function redCatEndHadouken()
   redCat.physics.fireball[#redCat.physics.fireball]['body']:applyLinearImpulse(700 * redCat.others.orientationIndex , 0)
   -- Insere uma fixture
   redCat.physics.fireball[#redCat.physics.fireball]['fixture'] = love.physics.newFixture(redCat.physics.fireball[#redCat.physics.fireball]['body'], redCat.physics.fireballShape, 1)
-  redCat.physics.fireball[#redCat.physics.fireball]['fixture']:setUserData('fireballHitbox')
+  redCat.physics.fireball[#redCat.physics.fireball]['fixture']:setUserData('RedFireballHitbox')
   -- Encerra o hadouken
   redCat.state.hadouken = false
 end

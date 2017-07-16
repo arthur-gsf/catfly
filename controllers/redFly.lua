@@ -43,7 +43,7 @@ function redFlyUpdate(dt , player)
   end
 
   if player == 'bot' then
-    if not ball.state.invisible then
+    if not ball.state.invisible and not redCat.att.ball then
       -- distancia euclidiana
       local distance = math.sqrt((ball.physics.body:getX() - redFly.physics.body:getX())^2 + (ball.physics.body:getY() - redFly.physics.body:getY())^2)
 

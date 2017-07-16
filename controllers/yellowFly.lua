@@ -43,7 +43,7 @@ function yellowFlyUpdate(dt , player)
   end
 
   if player == 'bot' then
-    if not ball.state.invisible then
+    if not ball.state.invisible and not yellowCat.att.ball then
       -- distancia euclidiana
       local distance = math.sqrt((ball.physics.body:getX() - yellowFly.physics.body:getX())^2 + (ball.physics.body:getY() - yellowFly.physics.body:getY())^2)
 
@@ -62,6 +62,7 @@ function yellowFlyUpdate(dt , player)
         yellowCat.att.mana = yellowCat.att.mana - 3
       elseif distance < math.random(100 , 200) and math.floor(yellowCat.att.mana)>= 2 then
         yellowCat.state.hadouken = true
+        love.audio.play(game.sound.hadouken)
         yellowCat.att.mana = yellowCat.att.mana - 2
       end
 

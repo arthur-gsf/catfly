@@ -55,7 +55,7 @@ end -- Fim do Load
 
 --    Update
 function greenCatUpdate(dt)
-  greenCat.att.mana = (greenCat.att.mana<greenCat.att.maxMana and greenCat.att.mana + dt/3) or greenCat.att.maxMana
+  greenCat.att.mana = (greenCat.att.mana<greenCat.att.maxMana and greenCat.att.mana + dt/2) or greenCat.att.maxMana
   greenCat.others.orientationIndex = (greenCat.others.direction == 'right' and 1) or -1
   if greenCat.att.life <= 0 then
     greenCat.state.alive = false
@@ -76,6 +76,8 @@ function greenCatBtn(key , scancode , isRepeat)
   if key == 'f' and math.floor(greenCat.att.mana) >= 2 then
     greenCat.state.hadouken = true
     greenCat.att.mana = greenCat.att.mana - 2
+    love.audio.play(game.sound.hadouken)
+
   end
 end
 --    Draw
@@ -84,7 +86,7 @@ function greenCatDraw()
   if greenCat.att.ball then
     love.graphics.draw(particles ,greenCat.physics.body:getX() , greenCat.physics.body:getY())
   end
-  love.graphics.reset()
+  love.graphics.setColor(255,255, 255 , 255)
 
   if not greenCat.state.alive then
     love.graphics.setColor(86, 87, 89)
@@ -108,6 +110,7 @@ function greenCatDraw()
       print(#game.physics.world:getBodyList())
     end
   end
+  love.graphics.setColor(255,255, 255 , 255)
 end -- Fim do Draw
 
 -- Inverte todas as animações
@@ -128,7 +131,7 @@ function greenCatEndHadouken()
   greenCat.physics.fireball[#greenCat.physics.fireball]['body']:applyLinearImpulse(700 * greenCat.others.orientationIndex , 0)
   -- Insere uma fixture
   greenCat.physics.fireball[#greenCat.physics.fireball]['fixture'] = love.physics.newFixture(greenCat.physics.fireball[#greenCat.physics.fireball]['body'], greenCat.physics.fireballShape, 1)
-  greenCat.physics.fireball[#greenCat.physics.fireball]['fixture']:setUserData('fireballHitbox')
+  greenCat.physics.fireball[#greenCat.physics.fireball]['fixture']:setUserData('GreenFireballHitbox')
   -- Encerra o hadouken
   greenCat.state.hadouken = false
 end

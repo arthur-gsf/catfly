@@ -50,7 +50,7 @@ function love.update(dt)
       redCatBtn(key)
     end
 
-    if main.state == 'over' and k == 'escape' then
+    if main.state == 'over' and key == 'escape' then
       for k , v in pairs(game.physics.world:getBodyList()) do
         v:destroy()
       end
@@ -75,6 +75,7 @@ function love.draw()
   elseif main.state == 'over' then
     love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)
     love.graphics.print('Esc para voltar ao menu')
+    love.graphics.draw(stage.background)
     -- Desenha a imagem de gameOver
   end
 

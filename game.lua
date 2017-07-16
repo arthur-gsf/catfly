@@ -13,7 +13,10 @@ function gameLoad()
 
   -- Sons
   game.sound = {}
-
+  game.sound.hadouken = love.audio.newSource('sound/game/hadouken.mp3')
+  game.sound.explosion = love.audio.newSource('sound/game/explosion.mp3')
+  game.sound.laser = love.audio.newSource('sound/game/laser.wav')
+  game.sound.dash = love.audio.newSource('sound/game/dash.mp3')
   -- Outros loads
   particleLoad()
   hudLoad()
@@ -51,7 +54,7 @@ function gameUpdate(dt)
       game.count = 3
     else
     end
-    game.physics.world:update(dt/100)
+    game.physics.world:update(dt/20)
   end
 
   ballUpdate(dt)
@@ -135,19 +138,17 @@ end -- Fim do Draw
 function dash(body)
   local velx , vely = body:getLinearVelocity()
   body:applyLinearImpulse(velx*4.5, vely*4.5)
+  love.audio.play(game.sound.dash)
 end
 
 function hasBall(usr)
-  if string.find(usr , 'red') then
+  if string.find(usr , 'redF') or string.find(usr , 'redC') then
     return redCat.att.ball
-  end
-  if string.find(usr , 'yellow') then
+  elseif string.find(usr , 'yellowF') or string.find(usr , 'yellowC') then
     return yellowCat.att.ball
-  end
-  if string.find(usr , 'blue') then
+  elseif string.find(usr , 'blueF') or string.find(usr , 'blueC') then
     return blueCat.att.ball
-  end
-  if string.find(usr , 'green') then
+  elseif string.find(usr , 'greenF') or string.find(usr , 'greenC') then
     return greenCat.att.ball
   end
 end
@@ -165,21 +166,23 @@ function whoHasBall()
 end
 
 function stealBall(usr)
+  love.audio.play(game.sound.explosion)
   ball.state.invisible = false
-  if string.find(usr , 'red') then
+  if string.find(usr , 'redF') or string.find(usr , 'redC') then
     redCat.att.ball = false
-  elseif string.find(usr , 'yellow') then
+  elseif string.find(usr , 'yellowF') or string.find(usr , 'yellowC') then
     yellowCat.att.ball = false
-  elseif string.find(usr , 'blue') then
+  elseif string.find(usr , 'blueF') or string.find(usr , 'blueC') then
     blueCat.att.ball = false
-  elseif string.find(usr , 'green') then
+  elseif string.find(usr , 'greenF') or string.find(usr , 'greenC') then
     greenCat.att.ball = false
   end
 end
 
 function setDamage(usr)
   goalParticles:emit(20)
-
+  love.audio.play(game.sound.explosion)
+  love.audio.play(game.sound.laser)
   if string.find(usr , 'red') then
     redCat.att.life = redCat.att.life  - 1
   elseif string.find(usr , 'yellow') then

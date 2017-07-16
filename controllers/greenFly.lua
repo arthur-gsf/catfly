@@ -43,7 +43,7 @@ function greenFlyUpdate(dt , player)
   end
 
   if player == 'bot' then
-    if not ball.state.invisible then
+    if not ball.state.invisible and not greenCat.att.ball then
       -- distancia euclidiana
       local distance = math.sqrt((ball.physics.body:getX() - greenFly.physics.body:getX())^2 + (ball.physics.body:getY() - greenFly.physics.body:getY())^2)
 

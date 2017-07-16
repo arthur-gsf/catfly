@@ -55,7 +55,7 @@ end -- Fim do Load
 
 --    Update
 function blueCatUpdate(dt)
-  blueCat.att.mana = (blueCat.att.mana<blueCat.att.maxMana and blueCat.att.mana + dt/3) or blueCat.att.maxMana
+  blueCat.att.mana = (blueCat.att.mana<blueCat.att.maxMana and blueCat.att.mana + dt/2) or blueCat.att.maxMana
   blueCat.others.orientationIndex = (blueCat.others.direction == 'right' and 1) or -1
   if blueCat.att.life <= 0 then
     blueCat.state.alive = false
@@ -76,6 +76,8 @@ function blueCatBtn(key , scancode , isRepeat)
   if key == 'f' and math.floor(blueCat.att.mana) >= 2 then
     blueCat.state.hadouken = true
     blueCat.att.mana = blueCat.att.mana - 2
+    love.audio.play(game.sound.hadouken)
+
   end
 end
 --    Draw
@@ -85,7 +87,7 @@ function blueCatDraw()
   if blueCat.att.ball then
     love.graphics.draw(particles ,blueCat.physics.body:getX() , blueCat.physics.body:getY())
   end
-  love.graphics.reset()
+  love.graphics.setColor(255,255, 255 , 255)
   if not blueCat.state.alive then
     love.graphics.setColor(86, 87, 89)
   end
@@ -105,6 +107,7 @@ function blueCatDraw()
       table.remove(blueCat.physics.fireball , 1)
     end
   end
+  love.graphics.setColor(255,255, 255 , 255)
 end -- Fim do Draw
 
 -- Inverte todas as animações
@@ -125,7 +128,7 @@ function blueCatEndHadouken()
   blueCat.physics.fireball[#blueCat.physics.fireball]['body']:applyLinearImpulse(700 * blueCat.others.orientationIndex , 0)
   -- Insere uma fixture
   blueCat.physics.fireball[#blueCat.physics.fireball]['fixture'] = love.physics.newFixture(blueCat.physics.fireball[#blueCat.physics.fireball]['body'], blueCat.physics.fireballShape, 1)
-  blueCat.physics.fireball[#blueCat.physics.fireball]['fixture']:setUserData('fireballHitbox')
+  blueCat.physics.fireball[#blueCat.physics.fireball]['fixture']:setUserData('BlueFireballHitbox')
   -- Encerra o hadouken
   blueCat.state.hadouken = false
 end

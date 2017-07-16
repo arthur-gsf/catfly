@@ -43,7 +43,7 @@ function blueFlyUpdate(dt , player)
   end
 
   if player == 'bot' then
-    if not ball.state.invisible then
+    if not ball.state.invisible and not blueCat.att.ball then
       -- distancia euclidiana
       local distance = math.sqrt((ball.physics.body:getX() - blueFly.physics.body:getX())^2 + (ball.physics.body:getY() - blueFly.physics.body:getY())^2)
 

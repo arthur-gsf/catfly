@@ -55,7 +55,7 @@ end -- Fim do Load
 
 --    Update
 function yellowCatUpdate(dt)
-  yellowCat.att.mana = (yellowCat.att.mana<yellowCat.att.maxMana and yellowCat.att.mana + dt/3) or yellowCat.att.maxMana
+  yellowCat.att.mana = (yellowCat.att.mana<yellowCat.att.maxMana and yellowCat.att.mana + dt/2) or yellowCat.att.maxMana
   yellowCat.others.orientationIndex = (yellowCat.others.direction == 'right' and 1) or -1
   if yellowCat.att.life <= 0 then
     yellowCat.state.alive = false
@@ -76,6 +76,7 @@ function yellowCatBtn(key , scancode , isRepeat)
   if key == 'f' and math.floor(yellowCat.att.mana) >= 2 then
     yellowCat.state.hadouken = true
     yellowCat.att.mana = yellowCat.att.mana - 2
+    love.audio.play(game.sound.hadouken)
   end
 end
 --    Draw
@@ -84,6 +85,7 @@ function yellowCatDraw()
   if yellowCat.att.ball then
     love.graphics.draw(particles ,yellowCat.physics.body:getX() , yellowCat.physics.body:getY())
   end
+
   if not yellowCat.state.alive then
     love.graphics.setColor(86, 87, 89)
   end
@@ -106,6 +108,7 @@ function yellowCatDraw()
       print(#game.physics.world:getBodyList())
     end
   end
+  love.graphics.setColor(255,255, 255 , 255)
 end -- Fim do Draw
 
 -- Inverte todas as animações
@@ -126,7 +129,7 @@ function yellowCatEndHadouken()
   yellowCat.physics.fireball[#yellowCat.physics.fireball]['body']:applyLinearImpulse(700 * yellowCat.others.orientationIndex , 0)
   -- Insere uma fixture
   yellowCat.physics.fireball[#yellowCat.physics.fireball]['fixture'] = love.physics.newFixture(yellowCat.physics.fireball[#yellowCat.physics.fireball]['body'], yellowCat.physics.fireballShape, 1)
-  yellowCat.physics.fireball[#yellowCat.physics.fireball]['fixture']:setUserData('fireballHitbox')
+  yellowCat.physics.fireball[#yellowCat.physics.fireball]['fixture']:setUserData('YellowFireballHitbox')
   -- Encerra o hadouken
   yellowCat.state.hadouken = false
 end
