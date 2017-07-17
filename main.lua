@@ -24,10 +24,11 @@ function love.load()
   -- Info
   main.info = {}
   main.info.screenWidth , main.info.screenHeight = love.window.getMode()
-  menuLoad()
   local scanlines = shine.scanlines()
   local filmgrain = shine.filmgrain()
   hudEffect = scanlines:chain(filmgrain)
+  arcadeEffect = shine.crt()
+  menuLoad()
 end -- Fim do Load
 
 --    Update    --
@@ -51,10 +52,10 @@ function love.update(dt)
     end
 
     if main.state == 'over' and key == 'escape' then
+      main.state = 'loading'
       for k , v in pairs(game.physics.world:getBodyList()) do
         v:destroy()
       end
-      game = {}
       menuLoad()
     end
 
@@ -63,7 +64,6 @@ end -- Fim do Update
 
 --    Draw    --
 function love.draw()
-
   -- Controle de Exibição de estados
   if main.state == 'menu' then
     menuDraw()
@@ -73,10 +73,11 @@ function love.draw()
     gameDraw()
     -- Desenha a imagem de pause
   elseif main.state == 'over' then
+    -- love.graphics.draw(stage.background)
+    stageDraw()
+    love.graphics.setFont(game.font)
     love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)
     love.graphics.print('Esc para voltar ao menu')
-    love.graphics.draw(stage.background)
     -- Desenha a imagem de gameOver
   end
-
 end -- Fim do Draw

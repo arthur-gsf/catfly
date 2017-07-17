@@ -8,7 +8,7 @@ function gameLoad()
   game.count = 3
   -- Física
   game.physics = {}
-  game.physics.world = love.physics.newWorld(0, 20, true)
+  game.physics.world = love.physics.newWorld(0, 0, true)
   game.physics.world:setCallbacks(beginContact, endContact)
 
   -- Sons
@@ -16,11 +16,12 @@ function gameLoad()
   game.sound.hadouken = love.audio.newSource('sound/game/hadouken.mp3')
   game.sound.explosion = love.audio.newSource('sound/game/explosion.mp3')
   game.sound.laser = love.audio.newSource('sound/game/laser.wav')
-  game.sound.dash = love.audio.newSource('sound/game/dash.mp3')
+  game.sound.dash = love.audio.newSource('sound/game/dash.wav')
+  game.sound.dead = love.audio.newSource('sound/game/dead.wav')
   -- Outros loads
   particleLoad()
-  hudLoad()
   stageLoad()
+  hudLoad()
   ballLoad()
   yellowFlyLoad()
   yellowCatLoad()
@@ -30,6 +31,7 @@ function gameLoad()
   blueCatLoad()
   greenFlyLoad()
   greenCatLoad()
+  burstGoal = nil
   game.alive = {'red' , 'yellow' , 'blue' , 'green'}
   -- Termina o Load
   main.state = 'game'
@@ -40,6 +42,7 @@ function gameUpdate(dt)
 
   particles:update(dt)
   goalParticles:update(dt)
+
   if #game.alive == 1 then
     main.state = 'over'
     return
@@ -194,6 +197,7 @@ function setDamage(usr)
   end
 
   if redCat.att.life <= 0 and not redCat.att.alive then
+    love.audio.play(game.sound.dead)
     for k ,v in pairs (game.alive) do
       if v == 'red' then
         table.remove(game.alive , k)
@@ -201,6 +205,7 @@ function setDamage(usr)
     end
   end
   if yellowCat.att.life <= 0 and not yellowCat.att.alive then
+    love.audio.play(game.sound.dead)
     for k ,v in pairs (game.alive) do
       if v == 'yellow' then
         table.remove(game.alive , k)
@@ -208,6 +213,7 @@ function setDamage(usr)
     end
   end
   if blueCat.att.life <= 0 and not blueCat.att.alive then
+    love.audio.play(game.sound.dead)
     for k ,v in pairs (game.alive) do
       if v == 'blue' then
         table.remove(game.alive , k)
@@ -215,6 +221,7 @@ function setDamage(usr)
     end
   end
   if greenCat.att.life <= 0 and not greenCat.att.alive then
+    love.audio.play(game.sound.dead)
     for k ,v in pairs (game.alive) do
       if v == 'green' then
         table.remove(game.alive , k)
