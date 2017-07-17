@@ -73,21 +73,9 @@ function blueFlyUpdate(dt , player)
       blueFly.physics.body:applyForce(math.random(700,1700)*1/distance*(blueFly.others.selected:getX() - blueFly.physics.body:getX()) , math.random(700,1700)*1/distance*(blueFly.others.selected:getY() - blueFly.physics.body:getY()))
     end
   elseif player == 'player' then
-    if love.keyboard.isDown('a') then
-      blueFly.physics.body:applyForce(-1050 , 0)
-    end
+    axis1 , axis2 = main.joysticks[1]:getAxes()
+    blueFly.physics.body:applyForce(axis1* 1000 , axis2* 950)
 
-    if love.keyboard.isDown('d') then
-      blueFly.physics.body:applyForce(1050 , 0)
-    end
-
-    if love.keyboard.isDown('w') then
-      blueFly.physics.body:applyForce(0, -1000)
-    end
-
-    if love.keyboard.isDown('s') then
-      blueFly.physics.body:applyForce(0, 1000)
-    end
   end
 end
 

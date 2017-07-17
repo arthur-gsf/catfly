@@ -18,7 +18,6 @@ shine = require 'shine'
 --    Load    --
 function love.load()
   main = {}
-  main.gameOverImg = love.graphics.newImage('img/menu/gameOver.png')
   -- Fonte
   main.font = love.graphics.newFont('fonts/font.ttf')
   -- Info
@@ -28,6 +27,7 @@ function love.load()
   local filmgrain = shine.filmgrain()
   hudEffect = scanlines:chain(filmgrain)
   arcadeEffect = shine.crt()
+  main.joysticks = love.joystick.getJoysticks()
   menuLoad()
 end -- Fim do Load
 
@@ -61,7 +61,26 @@ function love.update(dt)
 
   end -- Fim da Função
 end -- Fim do Update
-
+function love.joystickpressed(joystick, button)
+  print(button)
+  for k , v in pairs(main.joysticks) do
+    if joystick == v then
+       index = k
+    end
+  end
+  if index == 1 then
+    yellowFlyBtn(button)
+    yellowCatBtn(button)
+  end
+  if index == 2 then
+    blueFlyBtn(button)
+    blueCatBtn(button)
+  end
+  if index == 3 then
+    greenFlyBtn(button)
+    greenCatBtn()
+  end
+end
 --    Draw    --
 function love.draw()
   -- Controle de Exibição de estados
@@ -73,7 +92,6 @@ function love.draw()
     gameDraw()
     -- Desenha a imagem de pause
   elseif main.state == 'over' then
-    -- love.graphics.draw(stage.background)
     stageDraw()
     love.graphics.setFont(game.font)
     love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)

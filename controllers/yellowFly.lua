@@ -74,26 +74,13 @@ function yellowFlyUpdate(dt , player)
       yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(yellowFly.others.selected:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(yellowFly.others.selected:getY() - yellowFly.physics.body:getY()))
     end
   elseif player == 'player' then
-    if love.keyboard.isDown('a') then
-      yellowFly.physics.body:applyForce(-1050 , 0)
-    end
-
-    if love.keyboard.isDown('d') then
-      yellowFly.physics.body:applyForce(1050 , 0)
-    end
-
-    if love.keyboard.isDown('w') then
-      yellowFly.physics.body:applyForce(0, -1000)
-    end
-
-    if love.keyboard.isDown('s') then
-      yellowFly.physics.body:applyForce(0, 1000)
-    end
+    axis1 , axis2 = main.joysticks[1]:getAxes()
+    yellowFly.physics.body:applyForce(axis1* 1000 , axis2* 950)
   end
 end
 
 function yellowFlyBtn(key)
-  if key == 'space' and math.floor(yellowCat.att.mana) >= 3 then
+  if key == 2 and math.floor(yellowCat.att.mana) >= 3 then
     dash(yellowFly.physics.body)
     yellowCat.att.mana = yellowCat.att.mana - 3
   end

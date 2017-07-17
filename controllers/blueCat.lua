@@ -73,7 +73,7 @@ end -- Fim do Update
 
 function blueCatBtn(key , scancode , isRepeat)
   -- Controles
-  if key == 'f' and math.floor(blueCat.att.mana) >= 2 then
+  if key == 2 and math.floor(blueCat.att.mana) >= 2 then
     blueCat.state.hadouken = true
     blueCat.att.mana = blueCat.att.mana - 2
     love.audio.play(game.sound.hadouken)

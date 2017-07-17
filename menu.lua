@@ -49,11 +49,12 @@ function menuDraw()
   else
     love.graphics.setColor(255,255,255)
     love.graphics.print('1 Use W A S D para controlar o seu personagem' , 100 , 200)
-    love.graphics.print('2 Pegue a bola e leve a qualquer gol adversário' , 100 , 250)
-    love.graphics.print('3 Aperte espaço para dar um ataque rápido' , 100 , 300)
+    love.graphics.print('2 Pegue a bola e leve a qualquer gol adversario' , 100 , 250)
+    love.graphics.print('3 Aperte espaco para dar um ataque rapido' , 100 , 300)
     love.graphics.print('4 Batidas muito fortes roubam a bola e ela volta ao centro' , 100 , 350)
-    love.graphics.print('6 Aperte f para soltar hadouken (é melhor fugir de um)' , 100 , 400)
-    love.graphics.print('7 Cada gol tomado desconta vida, mate todos para vencer !!' , 100 , 450)
+    love.graphics.print('6 Aperte f para soltar hadouken (melhor fugir de um)' , 100 , 400)
+    love.graphics.print('7 Caso dois players tenham a bola o primeiro que marcar leva o ponto' , 100 , 450)
+    love.graphics.print('8 Cada gol tomado desconta vida mate todos para vencer' , 100 , 500)
   end
 
 end

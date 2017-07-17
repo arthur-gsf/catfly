@@ -73,21 +73,8 @@ function greenFlyUpdate(dt , player)
       greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(greenFly.others.selected:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(greenFly.others.selected:getY() - greenFly.physics.body:getY()))
     end
   elseif player == 'player' then
-    if love.keyboard.isDown('a') then
-      greenFly.physics.body:applyForce(-1050 , 0)
-    end
-
-    if love.keyboard.isDown('d') then
-      greenFly.physics.body:applyForce(1050 , 0)
-    end
-
-    if love.keyboard.isDown('w') then
-      greenFly.physics.body:applyForce(0, -1000)
-    end
-
-    if love.keyboard.isDown('s') then
-      greenFly.physics.body:applyForce(0, 1000)
-    end
+    axis1 , axis2 = main.joysticks[1]:getAxes()
+    greenFly.physics.body:applyForce(axis1* 1000 , axis2* 950)
   end
 end
 

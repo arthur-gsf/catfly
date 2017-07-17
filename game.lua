@@ -68,17 +68,17 @@ function gameUpdate(dt)
 
   if yellowCat.state.alive then
     yellowCatUpdate(dt)
-    yellowFlyUpdate(dt , 'bot')
-  end
-
-  if greenCat.state.alive then
-    greenCatUpdate(dt)
-    greenFlyUpdate(dt , 'bot')
+    yellowFlyUpdate(dt , (#main.joysticks >= 1 and 'player') or 'bot')
   end
 
   if blueCat.state.alive then
     blueCatUpdate(dt)
-    blueFlyUpdate(dt , 'bot')
+    blueFlyUpdate(dt , (#main.joysticks >= 2 and 'player') or 'bot')
+  end
+
+  if greenCat.state.alive then
+    greenCatUpdate(dt)
+    greenFlyUpdate(dt , (#main.joysticks >= 3 and 'player') or 'bot')
   end
 end -- Fim do Update
 

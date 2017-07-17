@@ -71,9 +71,9 @@ function yellowCatUpdate(dt)
 
 end -- Fim do Update
 
-function yellowCatBtn(key , scancode , isRepeat)
+function yellowCatBtn(key)
   -- Controles
-  if key == 'f' and math.floor(yellowCat.att.mana) >= 2 then
+  if key == 3 and math.floor(yellowCat.att.mana) >= 2 then
     yellowCat.state.hadouken = true
     yellowCat.att.mana = yellowCat.att.mana - 2
     love.audio.play(game.sound.hadouken)
