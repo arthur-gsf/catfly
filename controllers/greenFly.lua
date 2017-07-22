@@ -42,46 +42,35 @@ function greenFlyUpdate(dt , player)
     greenFly.others.direction = 'right'
   end
 
-  if player == 'bot' then
-    if not ball.state.invisible and not greenCat.att.ball then
-      -- distancia euclidiana
-      local distance = math.sqrt((ball.physics.body:getX() - greenFly.physics.body:getX())^2 + (ball.physics.body:getY() - greenFly.physics.body:getY())^2)
+  if not ball.state.invisible and not greenCat.att.ball then
+    -- distancia euclidiana
+    local distance = math.sqrt((ball.physics.body:getX() - greenFly.physics.body:getX())^2 + (ball.physics.body:getY() - greenFly.physics.body:getY())^2)
 
-      if distance < math.random(200,400) and math.floor(greenCat.att.mana)>3  then
-        dash(greenFly.physics.body)
-        greenCat.att.mana = greenCat.att.mana - 3
-      end
-      -- Aplica a força na direção da bola
-      greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(ball.physics.body:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(ball.physics.body:getY() - greenFly.physics.body:getY()))
-
-    elseif ball.state.invisible and not (greenCat.att.ball) then
-      local distance = math.sqrt((whoHasBall():getX() - greenFly.physics.body:getX())^2 + (whoHasBall():getY() - greenFly.physics.body:getY())^2)
-
-      if distance < math.random(200,400) and math.floor(greenCat.att.mana)>= 3  then
-        dash(greenFly.physics.body)
-        greenCat.att.mana = greenCat.att.mana - 3
-      elseif distance < math.random(100 , 200) and math.floor(greenCat.att.mana) >= 2 then
-        greenCat.state.hadouken = true
-        greenCat.att.mana = greenCat.att.mana - 2
-      end
-
-      greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - greenFly.physics.body:getY()))
-
-    elseif greenCat.att.ball then
-      local distance = math.sqrt((greenFly.others.selected:getX() - greenFly.physics.body:getX())^2 + (greenFly.others.selected:getY() - greenFly.physics.body:getY())^2)
-
-      greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(greenFly.others.selected:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(greenFly.others.selected:getY() - greenFly.physics.body:getY()))
+    if distance < math.random(200,400) and math.floor(greenCat.att.mana)>3  then
+      dash(greenFly.physics.body)
+      greenCat.att.mana = greenCat.att.mana - 3
     end
-  elseif player == 'player' then
-    axis1 , axis2 = main.joysticks[1]:getAxes()
-    greenFly.physics.body:applyForce(axis1* 1000 , axis2* 950)
-  end
-end
+    -- Aplica a força na direção da bola
+    greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(ball.physics.body:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(ball.physics.body:getY() - greenFly.physics.body:getY()))
 
-function greenFlyBtn(key)
-  if key == 'space' and math.floor(greenCat.att.mana) >= 3 then
-    dash(greenFly.physics.body)
-    greenCat.att.mana = greenCat.att.mana - 3
+  elseif ball.state.invisible and not (greenCat.att.ball) then
+    local distance = math.sqrt((whoHasBall():getX() - greenFly.physics.body:getX())^2 + (whoHasBall():getY() - greenFly.physics.body:getY())^2)
+
+    if distance < math.random(200,400) and math.floor(greenCat.att.mana)>=3  then
+      dash(greenFly.physics.body)
+      greenCat.att.mana = greenCat.att.mana - 3
+    elseif distance < math.random(100 , 200) and math.floor(greenCat.att.mana)>=2 then
+      love.audio.play(game.sound.hadouken)
+      greenCat.state.hadouken = true
+      greenCat.att.mana = greenCat.att.mana - 2
+    end
+
+    greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - greenFly.physics.body:getY()))
+
+  elseif greenCat.att.ball then
+    local distance = math.sqrt((greenFly.others.selected:getX() - greenFly.physics.body:getX())^2 + (greenFly.others.selected:getY() - greenFly.physics.body:getY())^2)
+
+    greenFly.physics.body:applyForce(math.random(700,1700)*1/distance*(greenFly.others.selected:getX() - greenFly.physics.body:getX()) , math.random(700,1700)*1/distance*(greenFly.others.selected:getY() - greenFly.physics.body:getY()))
   end
 end
 
@@ -104,8 +93,9 @@ function greenFlyColisions(flyBody , otherBody, usr, x , y)
   end
 
   if not(string.find(usr , 'green')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and   greenFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = flyBody:getLinearVelocity()
+      stealBall(usr , speedx , speedy)
     end
   end
 

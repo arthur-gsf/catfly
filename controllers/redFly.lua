@@ -23,9 +23,7 @@ function redFlyLoad()
 end
 
 function redFlyUpdate(dt , player)
-  redFly.idleAnimation:update(dt)
-  local x , y = redFly.physics.body:getLinearVelocity()
-  redFly.others.mediumSpeed = math.floor((math.abs(x)+math.abs(y))/2)
+  redFly.idleAnimation:update(dt) -- update na animação
 
   -- Atualiza a direção
   if redFly.others.direction == 'right' and redFly.physics.body:getLinearVelocity()<0 then
@@ -41,58 +39,14 @@ function redFlyUpdate(dt , player)
     redCat.others.direction = 'right'
     redFly.others.direction = 'right'
   end
-
-  if player == 'bot' then
-    if not ball.state.invisible and not redCat.att.ball then
-      -- distancia euclidiana
-      local distance = math.sqrt((ball.physics.body:getX() - redFly.physics.body:getX())^2 + (ball.physics.body:getY() - redFly.physics.body:getY())^2)
-
-      if distance < math.random(200,400) and math.floor(redCat.att.mana)>3  then
-        dash(redFly.physics.body)
-        redCat.att.mana = redCat.att.mana - 3
-      end
-      -- Aplica a força na direção da bola
-      redFly.physics.body:applyForce(math.random(700,1700)*1/distance*(ball.physics.body:getX() - redFly.physics.body:getX()) , math.random(700,1700)*1/distance*(ball.physics.body:getY() - redFly.physics.body:getY()))
-
-    elseif ball.state.invisible and not (redCat.att.ball) then
-      local distance = math.sqrt((whoHasBall():getX() - redFly.physics.body:getX())^2 + (whoHasBall():getY() - redFly.physics.body:getY())^2)
-
-      if distance < math.random(200,400) and math.floor(redCat.att.mana)>=3  then
-        dash(redFly.physics.body)
-        redCat.att.mana = redCat.att.mana - 3
-      elseif distance < math.random(100 , 200) and math.floor(redCat.att.mana)>=2 then
-        redCat.state.hadouken = true
-        redCat.att.mana = redCat.att.mana - 2
-      end
-
-      redFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - redFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - redFly.physics.body:getY()))
-
-    elseif redCat.att.ball then
-      local distance = math.sqrt((redFly.others.selected:getX() - redFly.physics.body:getX())^2 + (redFly.others.selected:getY() - redFly.physics.body:getY())^2)
-
-      redFly.physics.body:applyForce(math.random(700,1700)*1/distance*(redFly.others.selected:getX() - redFly.physics.body:getX()) , math.random(700,1700)*1/distance*(redFly.others.selected:getY() - redFly.physics.body:getY()))
-    end
-  elseif player == 'player' then
-    if love.keyboard.isDown('a') then
-      redFly.physics.body:applyForce(-1050 , 0)
-    end
-
-    if love.keyboard.isDown('d') then
-      redFly.physics.body:applyForce(1050 , 0)
-    end
-
-    if love.keyboard.isDown('w') then
-      redFly.physics.body:applyForce(0, -1000)
-    end
-
-    if love.keyboard.isDown('s') then
-      redFly.physics.body:applyForce(0, 1000)
-    end
+  local x , y = love.mouse.getX() , love.mouse.getY()
+  if love.mouse.isGrabbed() and x > 220 - 140  and x < 360 and y < (main.info.screenHeight/2) + 70 and y > (main.info.screenHeight/2) - 70  then
+    redFly.physics.body:applyForce((love.mouse.getX() - game.control.analogX)* 20 , (love.mouse.getY() - game.control.analogY)* 20)
   end
 end
 
-function redFlyBtn(key)
-  if key == 'space' and math.floor(redCat.att.mana) >= 3 then
+function redFlyBtn(x , y)
+  if x > main.info.screenWidth/2 and y < main.info.screenHeight/2 and math.floor(redCat.att.mana) >= 3 then
     dash(redFly.physics.body)
     redCat.att.mana = redCat.att.mana - 3
   end
@@ -106,7 +60,8 @@ function redFlyDraw()
   end
   redFly.idleAnimation:draw(redFly.idleImg , redFly.physics.body:getX() , redFly.physics.body:getY() , 0 , 1 , 1 , 40,40)
   love.graphics.reset()
-  -- love.graphics.print(redFly.others.mediumSpeed)
+  -- x , y = redFly.physics.body:getLinearVelocity()
+  -- love.graphics.print('x = '..x..' y = '..y)
 end
 
 function redFlyColisions(flyBody , otherBody, usr, x , y)
@@ -117,8 +72,9 @@ function redFlyColisions(flyBody , otherBody, usr, x , y)
   end
 
   if not(string.find(usr , 'red')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and   redFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = flyBody:getLinearVelocity()
+      stealBall(usr, speedx , speedy)
     end
   end
 

@@ -38,48 +38,32 @@ function love.update(dt)
   if main.state == 'game' then
     gameUpdate(dt)
   end
-
-  --    Controle de Botões    --
-  function love.keypressed(key , scancode , isRepeat)
-    --    Controle de Botões que modificam o estado
-    if main.state == 'menu' then
-      menuBtn(key , scancode , isRepeat)
-    end
-    --    Controle de Botões InGame
-    if main.state == 'game' then
-      redFlyBtn(key)
-      redCatBtn(key)
-    end
-
-    if main.state == 'over' and key == 'escape' then
-      main.state = 'loading'
-      for k , v in pairs(game.physics.world:getBodyList()) do
-        v:destroy()
-      end
-      menuLoad()
-    end
-
-  end -- Fim da Função
 end -- Fim do Update
-function love.joystickpressed(joystick, button)
-  print(button)
-  for k , v in pairs(main.joysticks) do
-    if joystick == v then
-       index = k
+
+function love.mousepressed(x, y, button, isTouch)
+  if main.state == 'menu' then
+    gameLoad()
+  end
+  if main.state == 'game' then
+    if x > 220 - 140  and x < 360 and y < (main.info.screenHeight/2) + 70 and y > (main.info.screenHeight/2) - 70 then
+      love.mouse.setGrabbed(true)
     end
+    redCatBtn(x , y)
+    redFlyBtn(x, y)
   end
-  if index == 1 then
-    yellowFlyBtn(button)
-    yellowCatBtn(button)
+  if main.state == 'over' then
+    main.state = 'loading'
+    for k , v in pairs(game.physics.world:getBodyList()) do
+      v:destroy()
+    end
+    menuLoad()
   end
-  if index == 2 then
-    blueFlyBtn(button)
-    blueCatBtn(button)
-  end
-  if index == 3 then
-    greenFlyBtn(button)
-    greenCatBtn()
-  end
+end
+
+function love.mousereleased(x, y, button, isTouch)
+  -- body...
+  love.mouse.setGrabbed(false)
+
 end
 --    Draw    --
 function love.draw()
@@ -94,8 +78,8 @@ function love.draw()
   elseif main.state == 'over' then
     stageDraw()
     love.graphics.setFont(game.font)
-    love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 , main.info.screenHeight/2)
-    love.graphics.print('Esc para voltar ao menu')
+    love.graphics.print(game.alive[#game.alive].. ' won !!' , main.info.screenWidth/2 - 280 , main.info.screenHeight/2)
+    love.graphics.print('toque para voltar ao menu' , main.info.screenWidth/2 - 280 , main.info.screenHeight/4)
     -- Desenha a imagem de gameOver
   end
 end -- Fim do Draw

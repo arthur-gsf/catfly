@@ -42,40 +42,35 @@ function yellowFlyUpdate(dt , player)
     yellowFly.others.direction = 'right'
   end
 
-  if player == 'bot' then
-    if not ball.state.invisible and not yellowCat.att.ball then
-      -- distancia euclidiana
-      local distance = math.sqrt((ball.physics.body:getX() - yellowFly.physics.body:getX())^2 + (ball.physics.body:getY() - yellowFly.physics.body:getY())^2)
+  if not ball.state.invisible and not yellowCat.att.ball then
+    -- distancia euclidiana
+    local distance = math.sqrt((ball.physics.body:getX() - yellowFly.physics.body:getX())^2 + (ball.physics.body:getY() - yellowFly.physics.body:getY())^2)
 
-      if distance < math.random(200,400) and math.floor(yellowCat.att.mana)>3  then
-        dash(yellowFly.physics.body)
-        yellowCat.att.mana = yellowCat.att.mana - 3
-      end
-      -- Aplica a força na direção da bola
-      yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(ball.physics.body:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(ball.physics.body:getY() - yellowFly.physics.body:getY()))
-
-    elseif ball.state.invisible and not (yellowCat.att.ball) then
-      local distance = math.sqrt((whoHasBall():getX() - yellowFly.physics.body:getX())^2 + (whoHasBall():getY() - yellowFly.physics.body:getY())^2)
-
-      if distance < math.random(200,400) and math.floor(yellowCat.att.mana)>3  then
-        dash(yellowFly.physics.body)
-        yellowCat.att.mana = yellowCat.att.mana - 3
-      elseif distance < math.random(100 , 200) and math.floor(yellowCat.att.mana)>= 2 then
-        yellowCat.state.hadouken = true
-        love.audio.play(game.sound.hadouken)
-        yellowCat.att.mana = yellowCat.att.mana - 2
-      end
-
-      yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - yellowFly.physics.body:getY()))
-
-    elseif yellowCat.att.ball then
-      local distance = math.sqrt((yellowFly.others.selected:getX() - yellowFly.physics.body:getX())^2 + (yellowFly.others.selected:getY() - yellowFly.physics.body:getY())^2)
-
-      yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(yellowFly.others.selected:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(yellowFly.others.selected:getY() - yellowFly.physics.body:getY()))
+    if distance < math.random(200,400) and math.floor(yellowCat.att.mana)>3  then
+      dash(yellowFly.physics.body)
+      yellowCat.att.mana = yellowCat.att.mana - 3
     end
-  elseif player == 'player' then
-    axis1 , axis2 = main.joysticks[1]:getAxes()
-    yellowFly.physics.body:applyForce(axis1* 1000 , axis2* 950)
+    -- Aplica a força na direção da bola
+    yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(ball.physics.body:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(ball.physics.body:getY() - yellowFly.physics.body:getY()))
+
+  elseif ball.state.invisible and not (yellowCat.att.ball) then
+    local distance = math.sqrt((whoHasBall():getX() - yellowFly.physics.body:getX())^2 + (whoHasBall():getY() - yellowFly.physics.body:getY())^2)
+
+    if distance < math.random(200,400) and math.floor(yellowCat.att.mana)>=3  then
+      dash(yellowFly.physics.body)
+      yellowCat.att.mana = yellowCat.att.mana - 3
+    elseif distance < math.random(100 , 200) and math.floor(yellowCat.att.mana)>=2 then
+      love.audio.play(game.sound.hadouken)
+      yellowCat.state.hadouken = true
+      yellowCat.att.mana = yellowCat.att.mana - 2
+    end
+
+    yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(whoHasBall():getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(whoHasBall():getY() - yellowFly.physics.body:getY()))
+
+  elseif yellowCat.att.ball then
+    local distance = math.sqrt((yellowFly.others.selected:getX() - yellowFly.physics.body:getX())^2 + (yellowFly.others.selected:getY() - yellowFly.physics.body:getY())^2)
+
+    yellowFly.physics.body:applyForce(math.random(700,1700)*1/distance*(yellowFly.others.selected:getX() - yellowFly.physics.body:getX()) , math.random(700,1700)*1/distance*(yellowFly.others.selected:getY() - yellowFly.physics.body:getY()))
   end
 end
 
@@ -94,7 +89,6 @@ function yellowFlyDraw()
   end
   yellowFly.idleAnimation:draw(yellowFly.idleImg , yellowFly.physics.body:getX() , yellowFly.physics.body:getY() , 0 , 1 , 1 , 40,40)
   love.graphics.reset()
-  -- love.graphics.print(yellowFly.others.mediumSpeed)
 end
 
 function yellowFlyColisions(flyBody , otherBody, usr, x , y)
@@ -105,8 +99,9 @@ function yellowFlyColisions(flyBody , otherBody, usr, x , y)
   end
 
   if not(string.find(usr , 'yellow')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and   yellowFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = flyBody:getLinearVelocity()
+      stealBall(usr, speedx , speedy)
     end
   end
 

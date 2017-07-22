@@ -34,7 +34,7 @@ function blueCatLoad()
 
   -- Atributos
   blueCat.att = {}
-  blueCat.att.maxLife   = 5
+  blueCat.att.maxLife   = 3
   blueCat.att.maxMana   = 5
   blueCat.att.maxExperience = 0
   blueCat.att.life  = blueCat.att.maxLife
@@ -71,15 +71,6 @@ function blueCatUpdate(dt)
 
 end -- Fim do Update
 
-function blueCatBtn(key , scancode , isRepeat)
-  -- Controles
-  if key == 2 and math.floor(blueCat.att.mana) >= 2 then
-    blueCat.state.hadouken = true
-    blueCat.att.mana = blueCat.att.mana - 2
-    love.audio.play(game.sound.hadouken)
-
-  end
-end
 --    Draw
 function blueCatDraw()
 
@@ -122,7 +113,7 @@ function blueCatEndHadouken()
     blueCat.physics.fireball[#blueCat.physics.fireball]['direction'] = 2
   end
   -- Insere o body
-  blueCat.physics.fireball[#blueCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, blueCat.physics.body:getX() + 10 * blueCat.others.orientationIndex, blueCat.physics.body:getY() + 12, 'dynamic')
+  blueCat.physics.fireball[#blueCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, blueCat.physics.body:getX() + 24 * blueCat.others.orientationIndex, blueCat.physics.body:getY() + 12, 'dynamic')
   blueCat.physics.fireball[#blueCat.physics.fireball]['body']:setGravityScale(0)
   blueCat.physics.fireball[#blueCat.physics.fireball]['body']:setFixedRotation(true)
   blueCat.physics.fireball[#blueCat.physics.fireball]['body']:applyLinearImpulse(700 * blueCat.others.orientationIndex , 0)
@@ -134,7 +125,6 @@ function blueCatEndHadouken()
 end
 
 function blueCatColisions(blueCatBody , otherBody , usr , x , y)
-  local velx , vely = blueCatBody:getLinearVelocity()
   if usr == 'ball' then
     blueFly.others.selected = stage.goals[setRandom('blue')]['body']
     blueCat.att.ball = true
@@ -142,8 +132,9 @@ function blueCatColisions(blueCatBody , otherBody , usr , x , y)
   end
 
   if not(string.find(usr , 'blue')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and blueFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = blueFly.physics.body:getLinearVelocity()
+      stealBall(usr , speedx , speedy)
     end
   end
 
@@ -162,7 +153,7 @@ function blueCatFireballColisions(fireballBody, otherBody , usr , x ,y)
       otherBody:applyLinearImpulse(2000*-x , 2000*-y)
     end
     if hasBall(usr) then
-      stealBall(usr)
+      stealBall(usr , 800 , 800)
     end
   end
 end

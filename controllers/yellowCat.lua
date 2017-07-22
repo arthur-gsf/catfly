@@ -34,7 +34,7 @@ function yellowCatLoad()
 
   -- Atributos
   yellowCat.att = {}
-  yellowCat.att.maxLife   = 5
+  yellowCat.att.maxLife   = 3
   yellowCat.att.maxMana   = 5
   yellowCat.att.maxExperience = 0
   yellowCat.att.life  = yellowCat.att.maxLife
@@ -123,7 +123,7 @@ function yellowCatEndHadouken()
     yellowCat.physics.fireball[#yellowCat.physics.fireball]['direction'] = 2
   end
   -- Insere o body
-  yellowCat.physics.fireball[#yellowCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, yellowCat.physics.body:getX() + 10 * yellowCat.others.orientationIndex, yellowCat.physics.body:getY() + 12, 'dynamic')
+  yellowCat.physics.fireball[#yellowCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, yellowCat.physics.body:getX() + 24 * yellowCat.others.orientationIndex, yellowCat.physics.body:getY() + 12, 'dynamic')
   yellowCat.physics.fireball[#yellowCat.physics.fireball]['body']:setGravityScale(0)
   yellowCat.physics.fireball[#yellowCat.physics.fireball]['body']:setFixedRotation(true)
   yellowCat.physics.fireball[#yellowCat.physics.fireball]['body']:applyLinearImpulse(700 * yellowCat.others.orientationIndex , 0)
@@ -135,7 +135,7 @@ function yellowCatEndHadouken()
 end
 
 function yellowCatColisions(yellowCatBody , otherBody , usr , x , y)
-  local velx , vely = yellowCatBody:getLinearVelocity()
+  local speedx , speedy = yellowFly.physics.body:getLinearVelocity()
   if usr == 'ball' then
     yellowFly.others.selected = stage.goals[setRandom('yellow')]['body']
     yellowCat.att.ball = true
@@ -144,7 +144,7 @@ function yellowCatColisions(yellowCatBody , otherBody , usr , x , y)
 
   if not(string.find(usr , 'yellow')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
     if hasBall(usr) and yellowFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+      stealBall(usr , speedx , speedy)
     end
   end
 
@@ -163,7 +163,7 @@ function yellowCatFireballColisions(fireballBody, otherBody , usr , x ,y)
       otherBody:applyLinearImpulse(2000*-x , 2000*-y)
     end
     if hasBall(usr) then
-      stealBall(usr)
+      stealBall(usr , 800 , 800)
     end
   end
 end

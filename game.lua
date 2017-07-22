@@ -10,7 +10,7 @@ function gameLoad()
   game.physics = {}
   game.physics.world = love.physics.newWorld(0, 0, true)
   game.physics.world:setCallbacks(beginContact, endContact)
-
+  game.physics.stealSpeed = 300
   -- Sons
   game.sound = {}
   game.sound.hadouken = love.audio.newSource('sound/game/hadouken.mp3')
@@ -18,6 +18,11 @@ function gameLoad()
   game.sound.laser = love.audio.newSource('sound/game/laser.wav')
   game.sound.dash = love.audio.newSource('sound/game/dash.wav')
   game.sound.dead = love.audio.newSource('sound/game/dead.wav')
+
+  game.control = {}
+  game.control.analogImg = love.graphics.newImage('img/hud/d-pad.png')
+  game.control.analogX = 220
+  game.control.analogY = main.info.screenHeight/2
   -- Outros loads
   particleLoad()
   stageLoad()
@@ -68,17 +73,17 @@ function gameUpdate(dt)
 
   if yellowCat.state.alive then
     yellowCatUpdate(dt)
-    yellowFlyUpdate(dt , (#main.joysticks >= 1 and 'player') or 'bot')
+    yellowFlyUpdate(dt)
   end
 
   if blueCat.state.alive then
     blueCatUpdate(dt)
-    blueFlyUpdate(dt , (#main.joysticks >= 2 and 'player') or 'bot')
+    blueFlyUpdate(dt)
   end
 
   if greenCat.state.alive then
     greenCatUpdate(dt)
-    greenFlyUpdate(dt , (#main.joysticks >= 3 and 'player') or 'bot')
+    greenFlyUpdate(dt)
   end
 end -- Fim do Update
 
@@ -168,17 +173,20 @@ function whoHasBall()
   end
 end
 
-function stealBall(usr)
-  love.audio.play(game.sound.explosion)
-  ball.state.invisible = false
-  if string.find(usr , 'redF') or string.find(usr , 'redC') then
-    redCat.att.ball = false
-  elseif string.find(usr , 'yellowF') or string.find(usr , 'yellowC') then
-    yellowCat.att.ball = false
-  elseif string.find(usr , 'blueF') or string.find(usr , 'blueC') then
-    blueCat.att.ball = false
-  elseif string.find(usr , 'greenF') or string.find(usr , 'greenC') then
-    greenCat.att.ball = false
+function stealBall(usr , velx , vely)
+  velx , vely = math.abs(velx) , math.abs(vely)
+  if velx > game.physics.stealSpeed or vely > game.physics.stealSpeed then
+    love.audio.play(game.sound.explosion)
+    ball.state.invisible = false
+    if string.find(usr , 'redF') or string.find(usr , 'redC') then
+      redCat.att.ball = false
+    elseif string.find(usr , 'yellowF') or string.find(usr , 'yellowC') then
+      yellowCat.att.ball = false
+    elseif string.find(usr , 'blueF') or string.find(usr , 'blueC') then
+      blueCat.att.ball = false
+    elseif string.find(usr , 'greenF') or string.find(usr , 'greenC') then
+      greenCat.att.ball = false
+    end
   end
 end
 
@@ -250,6 +258,7 @@ function setRandom(usr)
   end
 
   while isSelf or dead do
+    math.randomseed(os.time() * (math.random() * os.time()))
     n = math.floor(math.random(1,4))
     isSelf = string.find(stage.goals[n]['body']:getFixtureList()[1]:getUserData() , usr)
 
