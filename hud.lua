@@ -274,4 +274,5 @@ function hudDraw()
 
   -- controles
   love.graphics.draw(game.control.analogImg , game.control.analogX , game.control.analogY, 0 , 1 , 1 , game.control.analogImg:getWidth()/2 , game.control.analogImg:getHeight()/2)
+  love.graphics.circle('fill', game.control.analogX , game.control.analogY, 5)
 end

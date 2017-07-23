@@ -71,14 +71,6 @@ function redCatUpdate(dt)
 
 end -- Fim do Update
 
-function redCatBtn(x , y)
-  -- Controles
-  if x > main.info.screenWidth/2 and y > main.info.screenHeight/2 and math.floor(redCat.att.mana) >= 2 then
-    redCat.state.hadouken = true
-    redCat.att.mana = redCat.att.mana - 2
-    love.audio.play(game.sound.hadouken)
-  end
-end
 --    Draw
 function redCatDraw()
   love.graphics.setColor(244, 79, 65)

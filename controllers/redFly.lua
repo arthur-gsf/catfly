@@ -39,16 +39,26 @@ function redFlyUpdate(dt , player)
     redCat.others.direction = 'right'
     redFly.others.direction = 'right'
   end
-  local x , y = love.mouse.getX() , love.mouse.getY()
-  if love.mouse.isGrabbed() and x > 220 - 140  and x < 360 and y < (main.info.screenHeight/2) + 70 and y > (main.info.screenHeight/2) - 70  then
-    redFly.physics.body:applyForce((love.mouse.getX() - game.control.analogX)* 20 , (love.mouse.getY() - game.control.analogY)* 20)
-  end
-end
+  touches = love.touch.getTouches()
 
-function redFlyBtn(x , y)
-  if x > main.info.screenWidth/2 and y < main.info.screenHeight/2 and math.floor(redCat.att.mana) >= 3 then
-    dash(redFly.physics.body)
-    redCat.att.mana = redCat.att.mana - 3
+  for k , v in pairs(touches) do
+    local tx , ty = love.touch.getPosition(v)
+    if tx < main.info.screenWidth/2 then
+      local xindex = (tx < game.control.analogX and -1) or 1
+      local yindex = (ty < game.control.analogY and 1)or -1
+      redFly.physics.body:applyForce(xindex * 200 , (ty - game.control.analogY)* 20)
+    end
+
+    if tx > main.info.screenWidth/2 then
+      if ty > main.info.screenHeight/2 and math.floor(redCat.att.mana) >= 3  then
+        dash(redFly.physics.body)
+        redCat.att.mana = redCat.att.mana - 3
+      elseif math.floor(redCat.att.mana) >= 2 then
+        redCat.state.hadouken = true
+        redCat.att.mana = redCat.att.mana - 2
+        love.audio.play(game.sound.hadouken)
+      end
+    end
   end
 end
 

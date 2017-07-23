@@ -44,13 +44,7 @@ function love.mousepressed(x, y, button, isTouch)
   if main.state == 'menu' then
     gameLoad()
   end
-  if main.state == 'game' then
-    if x > 220 - 140  and x < 360 and y < (main.info.screenHeight/2) + 70 and y > (main.info.screenHeight/2) - 70 then
-      love.mouse.setGrabbed(true)
-    end
-    redCatBtn(x , y)
-    redFlyBtn(x, y)
-  end
+
   if main.state == 'over' then
     main.state = 'loading'
     for k , v in pairs(game.physics.world:getBodyList()) do
@@ -60,11 +54,6 @@ function love.mousepressed(x, y, button, isTouch)
   end
 end
 
-function love.mousereleased(x, y, button, isTouch)
-  -- body...
-  love.mouse.setGrabbed(false)
-
-end
 --    Draw    --
 function love.draw()
   -- Controle de Exibição de estados
