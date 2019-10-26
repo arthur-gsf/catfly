@@ -2,6 +2,7 @@ function menuLoad()
   menu = {}
   -- Imagens
   -- Som
+  
   menu.beep= love.audio.newSource('sound/menu/beep.wav')
   menu.font = love.graphics.newFont('fonts/fontMenu.ttf', 18)
   -- Ciclo de botões
