@@ -34,7 +34,7 @@ function redCatLoad()
 
   -- Atributos
   redCat.att = {}
-  redCat.att.maxLife   = 5
+  redCat.att.maxLife   = 3
   redCat.att.maxMana   = 5
   redCat.att.maxExperience = 0
   redCat.att.life  = redCat.att.maxLife
@@ -71,14 +71,6 @@ function redCatUpdate(dt)
 
 end -- Fim do Update
 
-function redCatBtn(key , scancode , isRepeat)
-  -- Controles
-  if key == 'f' and math.floor(redCat.att.mana) >= 2 then
-    redCat.state.hadouken = true
-    redCat.att.mana = redCat.att.mana - 2
-    love.audio.play(game.sound.hadouken)
-  end
-end
 --    Draw
 function redCatDraw()
   love.graphics.setColor(244, 79, 65)
@@ -121,7 +113,7 @@ function redCatEndHadouken()
     redCat.physics.fireball[#redCat.physics.fireball]['direction'] = 2
   end
   -- Insere o body
-  redCat.physics.fireball[#redCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, redCat.physics.body:getX() + 10 * redCat.others.orientationIndex, redCat.physics.body:getY() + 12, 'dynamic')
+  redCat.physics.fireball[#redCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, redCat.physics.body:getX() + 24 * redCat.others.orientationIndex, redCat.physics.body:getY() + 12, 'dynamic')
   redCat.physics.fireball[#redCat.physics.fireball]['body']:setGravityScale(0)
   redCat.physics.fireball[#redCat.physics.fireball]['body']:setFixedRotation(true)
   redCat.physics.fireball[#redCat.physics.fireball]['body']:applyLinearImpulse(700 * redCat.others.orientationIndex , 0)
@@ -133,7 +125,6 @@ function redCatEndHadouken()
 end
 
 function redCatColisions(redCatBody , otherBody , usr , x , y)
-  local velx , vely = redCatBody:getLinearVelocity()
   if usr == 'ball' then
     redFly.others.selected = stage.goals[setRandom('red')]['body']
     redCat.att.ball = true
@@ -141,11 +132,11 @@ function redCatColisions(redCatBody , otherBody , usr , x , y)
   end
 
   if not(string.find(usr , 'red')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and redFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = redFly.physics.body:getLinearVelocity()
+      stealBall(usr, speedx , speedy)
     end
   end
-
 end
 
 function redCatFireballColisions(fireballBody, otherBody , usr , x ,y)
@@ -161,7 +152,7 @@ function redCatFireballColisions(fireballBody, otherBody , usr , x ,y)
       otherBody:applyLinearImpulse(2000*-x , 2000*-y)
     end
     if hasBall(usr) then
-      stealBall(usr)
+      stealBall(usr , 800 , 800)
     end
   end
 end

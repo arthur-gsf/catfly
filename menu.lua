@@ -13,50 +13,7 @@ end
 function menuDraw()
   love.graphics.setBackgroundColor(190, 247, 145)
   love.graphics.setFont(menu.font)
-
-  if menu.state == 'principal' then
-    -- Alternância de foco nos botões de seleção
-    if menu.focus == 1 then
-      -- Desenha a seleção com foco
-      love.graphics.setColor(255,255,255)
-      love.graphics.print('Jogar', 100 , 200 , 0 , 1 ,1 )
-
-      -- Desenha o resto sem foco
-      love.graphics.setColor(94, 127, 67)
-      love.graphics.print('Como jogar', 100 , 250 , 0 , 1 , 1)
-      love.graphics.print('sair' , 100 , 300 , 0 , 1 , 1)
-    elseif menu.focus == 2 then
-      -- Desenha a seleção com foco
-      love.graphics.setColor(255,255,255)
-      love.graphics.print('Como jogar', 100 , 250 , 0, 1 , 1)
-
-      -- Desenha o resto sem foco
-      love.graphics.setColor(94, 127, 67)
-      love.graphics.print('Jogar', 100 , 200 , 0 , 1 , 1 )
-      love.graphics.print('sair' , 100 , 300 , 0 , 1  , 1)
-
-    elseif menu.focus == 3 then
-      -- Desenha a seleção com foco
-      love.graphics.setColor(255,255,255)
-      love.graphics.print('sair' , 100 , 300 , 0 , 1 , 1)
-
-      -- Desenha o resto sem foco
-      love.graphics.setColor(94, 127, 67)
-      love.graphics.print('Jogar', 100 , 200 , 0 , 1 , 1)
-      love.graphics.print('Como jogar', 100 , 250 , 0 , 1 , 1)
-    end
-  -- Desenha as instruções
-  else
-    love.graphics.setColor(255,255,255)
-    love.graphics.print('1 Use W A S D para controlar o seu personagem' , 100 , 200)
-    love.graphics.print('2 Pegue a bola e leve a qualquer gol adversario' , 100 , 250)
-    love.graphics.print('3 Aperte espaco para dar um ataque rapido' , 100 , 300)
-    love.graphics.print('4 Batidas muito fortes roubam a bola e ela volta ao centro' , 100 , 350)
-    love.graphics.print('6 Aperte f para soltar hadouken (melhor fugir de um)' , 100 , 400)
-    love.graphics.print('7 Caso dois players tenham a bola o primeiro que marcar leva o ponto' , 100 , 450)
-    love.graphics.print('8 Cada gol tomado desconta vida mate todos para vencer' , 100 , 500)
-  end
-
+  love.graphics.print("toque em qualquer lugar para jogar" , (main.info.screenWidth/2) - 200 , main.info.screenHeight/2  - 20)
 end
 
 function menuBtn(key , scancode , isRepeat)

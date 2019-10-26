@@ -34,7 +34,7 @@ function greenCatLoad()
 
   -- Atributos
   greenCat.att = {}
-  greenCat.att.maxLife   = 5
+  greenCat.att.maxLife   = 3
   greenCat.att.maxMana   = 5
   greenCat.att.maxExperience = 0
   greenCat.att.life  = greenCat.att.maxLife
@@ -71,15 +71,6 @@ function greenCatUpdate(dt)
 
 end -- Fim do Update
 
-function greenCatBtn(key , scancode , isRepeat)
-  -- Controles
-  if key == 2 and math.floor(greenCat.att.mana) >= 2 then
-    greenCat.state.hadouken = true
-    greenCat.att.mana = greenCat.att.mana - 2
-    love.audio.play(game.sound.hadouken)
-
-  end
-end
 --    Draw
 function greenCatDraw()
   love.graphics.setColor(65, 244, 70)
@@ -125,7 +116,7 @@ function greenCatEndHadouken()
     greenCat.physics.fireball[#greenCat.physics.fireball]['direction'] = 2
   end
   -- Insere o body
-  greenCat.physics.fireball[#greenCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, greenCat.physics.body:getX() + 10 * greenCat.others.orientationIndex, greenCat.physics.body:getY() + 12, 'dynamic')
+  greenCat.physics.fireball[#greenCat.physics.fireball]['body'] = love.physics.newBody(game.physics.world, greenCat.physics.body:getX() + 24 * greenCat.others.orientationIndex, greenCat.physics.body:getY() + 12, 'dynamic')
   greenCat.physics.fireball[#greenCat.physics.fireball]['body']:setGravityScale(0)
   greenCat.physics.fireball[#greenCat.physics.fireball]['body']:setFixedRotation(true)
   greenCat.physics.fireball[#greenCat.physics.fireball]['body']:applyLinearImpulse(700 * greenCat.others.orientationIndex , 0)
@@ -137,7 +128,7 @@ function greenCatEndHadouken()
 end
 
 function greenCatColisions(greenCatBody , otherBody , usr , x , y)
-  local velx , vely = greenCatBody:getLinearVelocity()
+
   if usr == 'ball' then
     greenFly.others.selected = stage.goals[setRandom('green')]['body']
     greenCat.att.ball = true
@@ -145,8 +136,9 @@ function greenCatColisions(greenCatBody , otherBody , usr , x , y)
   end
 
   if not(string.find(usr , 'green')) and (string.find(usr , 'Cat') or string.find(usr , 'Fly')) then
-    if hasBall(usr) and greenFly.others.mediumSpeed > 130 then
-      stealBall(usr)
+    if hasBall(usr) then
+      local speedx , speedy = greenFly.physics.body:getLinearVelocity()
+      stealBall(usr , speedx , speedy)
     end
   end
 
@@ -165,7 +157,7 @@ function greenCatFireballColisions(fireballBody, otherBody , usr , x ,y)
       otherBody:applyLinearImpulse(2000*-x , 2000*-y)
     end
     if hasBall(usr) then
-      stealBall(usr)
+      stealBall(usr , 800 , 800)
     end
   end
 end

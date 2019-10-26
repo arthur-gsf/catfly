@@ -271,4 +271,8 @@ function hudDraw()
 
   love.graphics.draw(main.hud.xpBarEnd ,172 + main.hud.emptyBar[1]:getWidth() * (greenCat.att.maxExperience + 1) ,main.info.screenHeight - 118)
   love.graphics.setColor(255, 255, 255, 255)
+
+  -- controles
+  love.graphics.draw(game.control.analogImg , game.control.analogX , game.control.analogY, 0 , 1 , 1 , game.control.analogImg:getWidth()/2 , game.control.analogImg:getHeight()/2)
+  love.graphics.circle('fill', game.control.analogX , game.control.analogY, 5)
 end
